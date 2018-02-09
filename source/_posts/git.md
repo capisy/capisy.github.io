@@ -12,8 +12,4 @@ tags: git
 
 <!-- more -->
 
-## git 配置
-```
-    git config --global user.name "mf"
-    git config --global user.email "925697@163.com"
-```
+暂时先不写了。。。。。
