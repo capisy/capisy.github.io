@@ -2,6 +2,7 @@
 title: Redis-CRUD
 date: 2019-04-01 17:25:02
 tags: redis
+catalog: true
 ---
 
 #### 安装

@@ -2,6 +2,7 @@
 title: 备忘Git不常用的命令
 date: 2018-02-09 09:07:00
 tags: git
+catalog: true
 ---
 
 #### 生成 ssh

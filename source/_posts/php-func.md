@@ -2,6 +2,7 @@
 title: php-函数篇
 date: 2019-03-31 21:35:02
 tag: php
+catalog: true
 ---
 
 #### 设置文件头信息
@@ -122,7 +123,7 @@ $str = implode('',$str_arr);
 ```php
 ```
 
-局部静态变量
+#### 局部静态变量
 ```php
 function foo(){
 	static $var = 0;
@@ -138,7 +139,7 @@ const foo = (function(){
 	}
 }())
 ```
-全局变量
+#### 全局变量
 ```php
 $a = 1;
 $b = 2;
@@ -168,14 +169,14 @@ fun($obj);
 print_r($obj); // a=3,b=4
 
 ```
-函数参数可以设置默认值
+#### 函数参数可以设置默认值
 > 设置默认值的变量必须放到最后
 ```php
 function foo($a=3,$b=4){
  echo $a,$b;
 }
 ```
-可变参数
+#### 可变参数
 ```php
 function foo(){
   print_r(func_get_args()); // [1,2,3]
@@ -190,7 +191,7 @@ function foo(){
 	console.log(args,args.length)
 }
 ```
-参数类型
+#### 参数类型
 > 可选参数： array、stdClass、callable（回调函数）
 > 在指定了参数类型后，如果参数类型不匹配程序会报错
 ```php
@@ -199,7 +200,7 @@ function foo(array $arr){
 }
 foo([1,2,3]) 
 ```
-函数嵌套
+#### 函数嵌套
 > php中所有函数都是全局作用域
 > 如果要在全局调用函数内部嵌套的函数，需要先执行外部的函数
 ```php

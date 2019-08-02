@@ -2,6 +2,7 @@
 title: vue-router
 date: 2018-01-31 16:07:00
 tags: vue
+catalog: true
 ---
 
 #### 初始化

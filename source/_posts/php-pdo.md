@@ -2,6 +2,7 @@
 title: php-mysql_pdo
 date: 2019-04-06 23:25:00
 tag: php
+catalog: true
 ---
 #### mysql连接
 > dsn:data source name

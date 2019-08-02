@@ -2,6 +2,7 @@
 title: php-数据类型
 date: 2019-03-31 11:41:44
 tag: php
+catalog: true
 ---
 
 #### 一次声明多个变量

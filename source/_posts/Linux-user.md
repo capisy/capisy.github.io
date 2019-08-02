@@ -2,6 +2,7 @@
 title: Linux- 用户管理
 date: 2018-01-30 10:07:00
 tags: Linux
+catalog: true
 ---
 
 #### 查看用户
@@ -73,7 +74,7 @@ tags: Linux
   - u<uid>：修改用户 ID；
   - U:解除密码锁定。
 
-## 删除用户
+#### 删除用户
 
 ```
     sudo deluser yyy --remove-home

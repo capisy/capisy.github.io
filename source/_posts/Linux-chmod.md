@@ -2,6 +2,7 @@
 title: Linux-权限管理
 date: 2018-01-31 10:07:00
 tags: Linux
+catalog: true
 ---
 
 #### 查看文件权限

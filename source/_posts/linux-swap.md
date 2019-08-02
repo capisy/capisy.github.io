@@ -2,6 +2,7 @@
 title: Linux-swap&kxsw
 date: 2018-01-30 10:07:00
 tags: Linux
+catalog: true
 ---
 
 #### 查看磁盘空间
