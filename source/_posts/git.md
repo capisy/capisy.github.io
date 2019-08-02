@@ -11,6 +11,12 @@ catalog: true
 ssh-keygen -t rsa -C "925697@163.com"
 ```
 
+#### warning: LF will be replaced by CRLF
+
+```
+ git config --global core.autocrlf true
+```
+
 #### 日志统计
 
 ```
