@@ -1,0 +1,27 @@
+<!-- Short About -->
+<section class="visible-md visible-lg">
+    <h5><a href="<%= config.root %>about/">ABOUT ME</a></h5>
+    <div class="short-about">
+
+        <% if(config['sidebar-avatar']) { %>
+        <img id="avatar_pic" src="<%= config['root'] %><%= config['sidebar-avatar'] %>" />
+        <% } %>
+
+        <!-- <% if(config['sidebar-about-description']) { %>
+        <p><%= config['sidebar-about-description'] %></p>
+        <% }%> -->
+
+        <!-- SNS Link -->
+        <ul class="list-inline">
+            <li>
+                <a target="_blank" href="https://github.com/<%= config.github_username %>">github:github.com/capisy</a>
+            </li>
+            <li>
+                <a href="mailto:mfyj04@gmail.com" target="_blank" rel="noopener noreferrer">邮箱:mfyj04@gmail.com</a>
+            </li>
+            <li>
+                微信/QQ：593903956
+            </li>
+        </ul>
+    </div>
+</section>
