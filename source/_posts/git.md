@@ -1,25 +1,23 @@
 ---
-title: 备忘一些git不常用的命令和坑爹的错误
+title: 备忘Git不常用的命令
 date: 2018-02-09 09:07:00
 tags: git
 ---
 
-<style>
-    ::selection{ color:#fff; background-color: #e26848; }
-    .tx-explain { color:#666;margin-left:10px;  }
-</style>
-
-![](/images/blog/git/git.jpg)
-
-<!-- more -->
-
-## 日志统计
+#### 生成 ssh
 
 ```
-    git log --stat //显示每个（commit）中文件修改详情
+ssh-keygen -t rsa -C "925697@163.com"
 ```
 
-## 比较提交
+#### 日志统计
+
+```
+    git log --graph // 打印提交信息
+    git log --stat // 打印提交统计
+```
+
+#### 比较提交
 
 ```
     git diff //查看修改的文件的内容
@@ -27,16 +25,15 @@ tags: git
     git diff --cached //查看缓存区内和上次提交的内容的差别
 ```
 
-## 新建一个空分支
+#### 新建一个空分支
 
 ```
 git checkout --orphan <new branch>
 ```
 
-## 克隆 github 上项目的非 master 分支
+#### 克隆 github 上项目的非 master 分支
 
 ```
 git branch -a
-
 git checkout -b <name> origin/<name>
 ```
