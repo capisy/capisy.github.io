@@ -29,39 +29,52 @@ catalog: true
     chmod go-rw <file> //g: group,o:others,u:user>; +:增加权限，-： 去掉权限
 ```
 
-### 防火墙操作
-#### 查看防火墙状态
+#### 防火墙操作
+
+查看防火墙状态
+
 ```linux
 firewall-cmd --state
 systemctl status firewalld
 ```
-#### 关闭、开启防火墙
+
+关闭、开启防火墙
+
 ```linux
 systemctl start firewalld
 systemctl stop firewalld
 ```
-#### 禁止firewall开机启动
+
+禁止 firewall 开机启动
+
 ```linux
 systemctl disable firewalld
 ```
-####  查看已经开放的端口
+
+查看已经开放的端口
+
 ```linux
 firewall-cmd --list-ports
 ```
-#### 开启端口
+
+开启端口
+
 ```linux
-firewall-cmd --zone=public --add-port=80/tcp --permanent 
+firewall-cmd --zone=public --add-port=80/tcp --permanent
 命令含义:
 –zone #作用域
 –add-port=80/tcp #添加端口，格式为：端口/通讯协议
 –permanent #永久生效，没有此参数重启后失效
 ```
-#### 关闭端口
+
+关闭端口
+
 ```linux
-firewall-cmd --add-port=80/tcp --permanent 
+firewall-cmd --add-port=80/tcp --permanent
 ```
 
-#### 重载生效刚才的端口设置
+重载生效刚才的端口设置
+
 ```linux
 firewall-cmd --reload
 ```
