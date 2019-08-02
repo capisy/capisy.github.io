@@ -179,4 +179,4 @@ sitemap:
 deploy:
   type: git
   repository: https://github.com/capisy/capisy.github.io.git
-  branch: gh-page
+  branch: master
