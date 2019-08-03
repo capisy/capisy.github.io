@@ -24,7 +24,7 @@ $p1->name = 'new name';
 echo $p2->name; // 'new name'
 ```
 
-![](/images/blog/php/01.jpg)
+![示意图](/images/blog/php/01.jpg)
 
 ##### 如果是引用传递
 
@@ -34,4 +34,4 @@ $p3 = 'shiyuan';
 echo $p1; // shiyuan
 ```
 
-![](/images/blog/php/02.jpg)
+![示意图](/images/blog/php/02.jpg)
