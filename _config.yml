@@ -12,7 +12,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://capisy.github.io       # Note: don't forget to modify the CNAME file to your url
+url: https://capisy.github.io # Note: don't forget to modify the CNAME file to your url
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -20,18 +20,17 @@ permalink_defaults:
 #Custom Setting Start
 
 # Site settings
-SEOTitle: 晓の博客-capisy.cn
+SEOTitle: 晓の博客-https://capisy.cn
 email: mfyj04@gmail.com
-description: ""
-keyword: ""
+description: "capisy.cn，web前端，全栈，koa，eggjs，vue，react，https://capisy.cn"
+keyword: "web前端，全栈，koa，eggjs，vue，react"
 header-img: images/home-bg.jpg
 signature: false #show signature
-signature-img:  
-
+signature-img:
 
 # SNS settings
 # RSS: false
-weibo_username:  dx199166
+weibo_username: dx199166
 # zhihu_username:  99djy.com
 github_username: capisy
 twitter_username: mfyj04
@@ -39,17 +38,11 @@ twitter_username: mfyj04
 # linkedin_username:  yu-hsuan-yen
 
 # Build settings
-anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
+anchorjs: true # if you want to customize anchor. check out line:181 of `post.html`
 
-
-# Disqus settings
-# disqus_username: your-disqus-ID
-
-# Duoshuo settings
-# duoshuo_username: kaijun
-# Share component is depend on Comment so we can NOT use share only.
-# duoshuo_share: true                     # set to false if you want to use Comment without Sharing
-
+### liveRe
+liveRe: true
+liveRe_uid: MTAyMC80NTc4Mi8yMjI5Mw==
 
 # Analytics settings
 # Baidu Analytics
@@ -58,51 +51,26 @@ anchorjs: true                          # if you want to customize anchor. check
 # ga_track_id: 'UA-XXXXXXXX-X'          # Format: UA-xxxxxx-xx
 # ga_domain: yoursite
 
-
 # Sidebar settings
-sidebar: true                       # whether or not using Sidebar.
+sidebar: true # whether or not using Sidebar.
 sidebar-about-description: "capisy"
-sidebar-avatar: images/mf-avatar.jpg     # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-avatar: images/mf-avatar.jpg # use absolute URL, seeing it's used in both `/` and `/about/`
 widgets:
-- featured-tags
-# - category
-- short-about
-- recent-posts
-- archive
+  - featured-tags
+  # - category
+  - short-about
+  - recent-posts
+  - archive
 # - friends-blog
 
 # widget behavior
 ## Archive
-archive_type: 'monthly'
+archive_type: "monthly"
 show_count: true
 
-
 ## Featured Tags
-featured-tags: true                     # whether or not using Feature-Tags
-featured-condition-size: 1           # A tag will be featured if the size of it is more than this condition value
-
-
-## Friends
-friends: [
-    {
-        title: "Bean Tech",
-        href: "http://beantech.org"
-    },{
-        title: "Kaijun's Blog",
-        href: "http://blog.kaijun.rocks"
-    },{
-        title: "Hux Blog",
-        href: "http://huangxuan.me"
-    },{
-        title: "It Helps SEO",
-        href: "#"
-    }
-]
-
-
-#Custom Setting End
-
-
+featured-tags: true # whether or not using Feature-Tags
+featured-condition-size: 1 # A tag will be featured if the size of it is more than this condition value
 
 # Directory
 source_dir: source
@@ -153,7 +121,7 @@ archive_generator:
   yearly: true
   monthly: true
   daily: false
-  
+
 # Markdown-it config
 ## Docs: https://github.com/celsomiranda/hexo-renderer-markdown-it/wiki
 markdown:
@@ -163,8 +131,8 @@ markdown:
     breaks: true
     linkify: true
     typographer: true
-    quotes: '“”‘’'
-  
+    quotes: "“”‘’"
+
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
