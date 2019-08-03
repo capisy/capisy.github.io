@@ -35,7 +35,3 @@ echo $p1; // shiyuan
 ```
 
 ![](/images/blog/php/02.jpg)
-
-f1g1ns1.dnspod.net
-
-f1g1ns2.dnspod.net
