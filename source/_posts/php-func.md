@@ -1,5 +1,5 @@
 ---
-title: php-函数篇
+title: php函数篇
 date: 2019-03-31 21:35:02
 tag: php
 catalog: true
@@ -121,6 +121,7 @@ $str_arr = explode(' ',$str);
 $str = implode('',$str_arr);
 ```
 ```php
+
 ```
 
 #### 局部静态变量
