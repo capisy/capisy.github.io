@@ -1,5 +1,5 @@
 ---
-title: Linux- 用户管理
+title: 用户管理
 date: 2018-01-30 10:07:00
 tags: Linux
 catalog: true

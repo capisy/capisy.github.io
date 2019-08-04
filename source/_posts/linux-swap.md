@@ -1,5 +1,5 @@
 ---
-title: Linux-swap&kxsw
+title: 虚拟内存&kxsw
 date: 2018-01-30 10:07:00
 tags: Linux
 catalog: true

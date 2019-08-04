@@ -1,5 +1,5 @@
 ---
-title: php数据类型
+title: 基础-数据类型
 date: 2019-03-31 11:41:44
 tag: php
 catalog: true
