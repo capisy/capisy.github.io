@@ -123,10 +123,11 @@ db.user.update({},{$pull:{
 }}) // {... addr:['ToKyo']}
 ```
 
-##### $ ：query中匹配的元素
+###### $ ：query中匹配的元素
 
 ```
 db.user.update({addr:'ToKyo'},{$set:{
 	'addr.$':'东京'
 }}) // {...,addr:['东京']}
 ```
+
