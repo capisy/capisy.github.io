@@ -1,5 +1,5 @@
 ---
-title: mongo shell 增加、查询操作
+title: mongo shell 增加、删除、查询操作
 date: 2018-08-06 09:55:00
 tag: mongodb
 catalog: true
