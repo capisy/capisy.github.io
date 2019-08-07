@@ -47,6 +47,20 @@ db.user.remove({name:'shiyuan'})
 db.user.drop() // 如果一个数据库中没有集合存在，数据库会被自动删除
 ```
 
+##### 删除文档
+
+```
+db.user.remove({}); // 删除所有文档，但会保留集合
+```
+
+````
+db.user.remove({name:'sy'}); // 删除所有符合筛选条件的文档
+````
+
+```
+db.user.remove({name:'sy'},{justOne:true}) // 删除符合条件的最先匹配的一篇文档
+```
+
 ##### 一次添加多条数据
 
 ```

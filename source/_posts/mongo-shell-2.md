@@ -131,3 +131,19 @@ db.user.update({addr:'ToKyo'},{$set:{
 }}) // {...,addr:['东京']}
 ```
 
+##### 一次更新所有查询匹配的数据
+
+> @p3:如果查询的匹配结果为空，是否插入新的文档，默认为false
+>
+> @p4:默认为false：只更新找到的第一条数据，true:更新所有找到的数据
+
+```
+db.user.update({name:'sy'},{$set:{age:16}},false,true);
+```
+
+#### collection 重命名
+
+```
+db.user.renameCollection('users'); // user -> users
+```
+
