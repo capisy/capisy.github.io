@@ -8,6 +8,16 @@
   .post-container {
     padding-right: 5%;
   }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: hsla(0, 0%, 100%, 0.1);
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #a6a8b1;
+  }
 }
 .sidebar-container {
   color: #bfbfbf;
@@ -553,7 +563,7 @@ pre code {
   font-size: 13px;
   font-style: italic;
   color: #a3a3a3;
-	word-break: break-all;
+  word-break: break-all;
 }
 .post-content-preview:hover {
   color: #0085a1;
