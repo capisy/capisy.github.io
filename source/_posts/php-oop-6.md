@@ -9,8 +9,6 @@ catalog: true
 
 > 在创建某个子类对象时，如果子类没有定义构造函数，则会调用父类的构造函数。如果子类定义了构造函数，则会覆盖父类的构造函数。
 
-
-
 #### 子类调用父类方法的两种方式
 
 ```
@@ -62,4 +60,93 @@ $r1 = new Reload;
 $r1->getVal(30,40); // 求和
 $r1->getVal(30,40,50); // 求最大值
 ```
+
+#### 属性重载
+
+```
+class Person{
+    private $prop_array = array();
+    
+    function __set($prop_name,$val){
+        $this->prop_array[$prop_name] = $val;
+    }
+    
+    function __get($prop_name){
+        if(isset($this->$prop_array[$prop_name])){
+            return $this->$prop_array[$prop_name]
+        }else {
+            return '属性不存在';
+        }
+    }
+}
+```
+
+#### 方法重写
+
+> 如果子类需要访问父类的方法
+
+```
+class Animal{
+    function cry(){
+        echo '父类的cry方法...';
+    }
+}
+```
+
+- 如果子类不含有父类的方法
+
+```
+class Cat extends Animal{
+    function cry2(){
+        parent::cry(); // 第一种调用方式
+        $this->cry(); // 第二种调用方式
+    }
+}
+```
+
+- 如果子类含有父类的方法
+
+```
+class Dog extends Animal{
+    function cry(){
+        parent::cry();
+    }
+} // 如果使用$this的方式调用就会递归死循环
+```
+
+##### 注意事项
+
+1.子类方法的参数个数、参数名称要和父类方法的参数个数、参数名称保持一致
+
+2.如果父类方法的参数使用了类型约束，还必须保证数据类型一致
+
+```
+class A {
+    function mergeArr(array $arr1, array $arr2){
+        return array_merge($arr1,$arr2);
+    }
+}
+```
+
+```
+class B extends A {
+    function mergeArr(array $arr1, array $arr2){
+        echo '重写父类的mergeArr';
+    }
+}
+```
+
+3.子类方法不能缩小父类方法的访问权限
+
+````
+class A {
+    protected function foo(){}
+}
+````
+
+````
+class B extends A {
+    public function foo(){}
+}
+````
 
