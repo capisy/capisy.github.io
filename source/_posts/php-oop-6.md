@@ -150,3 +150,57 @@ class B extends A {
 }
 ````
 
+#### 多态
+
+> 在面向对象中，对象在不同情况下的多种状态。
+
+```
+class Animal{
+    public $name;
+    function __construct($name){
+        $this->name =$name;
+    }
+    function showInfo(){
+        return $this->name;
+    }
+}
+
+class Cat extends Animal{}
+class Dog extends Animal{}
+```
+
+```
+class Food{
+    public $food;
+    function __construct($food){
+        $this->food = $food;
+    }
+    function showFood(){
+        return $this->food;
+    }
+}
+
+class Fish extends Food{}
+class Bone extends Food{}
+```
+
+```
+class Master{
+    function feed(Animal $animal, Food $food){
+        echo '<br>'.$animal->showInfo() . '喜欢吃' . $food->showFood();
+    }
+}
+```
+
+```
+$c1 = new Cat('波斯猫');
+$d1 = new Dog('二哈');
+
+$f1 = new Fish('<・)))><<');
+$b1 = new Bone('骨头');
+
+$xiaobai = new Master;
+$xiaobai->feed($c1,$f1);
+$xiaobai->feed($d1,$b1);
+```
+
