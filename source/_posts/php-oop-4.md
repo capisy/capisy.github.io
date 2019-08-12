@@ -102,6 +102,24 @@ class Person{
 Person::showName(); // Undefined variable: name
 ```
 
+> 静态方法也不调用非静态方法（成员方法）
+
+```
+class Person{
+	static function execFunc(){
+        $this->sayHello();
+	}
+
+    function sayHello(){
+        echo 'Hello !';
+    }
+}
+
+Person::execFunc(); // 在执行上下文找不到$this
+```
+
+
+
 ##### 使用静态方法实现单例模式
 
 ```

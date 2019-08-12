@@ -1,5 +1,5 @@
 ---
-title: 面向对象-封装、继承和多态
+title: 面向对象-封装
 date: 2019-08-07 19:16:00
 tag: php
 catalog: true
