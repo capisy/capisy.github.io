@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="screen-orientation" content="portrait">
+  <meta name="full-screen" content="yes">
+  <meta name="browsermode" content="application">
+  <meta name="x5-orientation" content="portrait">
+  <meta name="x5-fullscreen" content="true">
+  <meta name="x5-page-mode" content="app">
+  <meta name="description" content="capisy.cn，web前端，全栈，koa，eggjs，vue，react，https://capisy.cn">
+  <meta name="keyword" content="web前端，全栈，koa，eggjs，vue，react">
+  <link rel="shortcut icon" href="/favicon.png">
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <title>
+     mongo shell 更新操作 - 晓の博客-capisy.cn 
+  </title>
+
+  <link rel="canonical" href="https://capisy.github.io/2018/08/07/mongo-shell-2/">
+
+  <!-- Bootstrap Core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/beantech.min.css">
+
+  <!-- Pygments Highlight CSS -->
+  <link rel="stylesheet" href="/css/highlight.css"> <link rel="stylesheet" href="/css/widget.css"> <link rel="stylesheet" href="/css/rocket.css">
+  <link rel="stylesheet" href="/css/signature.css"> <link rel="stylesheet" href="/css/toc.css">
+
+  <!-- Custom Fonts -->
+  <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+  <!-- Hux change font-awesome CDN to qiniu -->
+  <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- ga & ba script hoook -->
+  <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+
+<body ontouchstart="">
+    <!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+	header.intro-header {
+		background-image: url('/images/home-bg.jpg')
+	}
+</style>
+
+<header class="intro-header">
+	<!-- Signature -->
+	<div id="signature">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+					
+					<div class="post-heading">
+						<div class="tags">
+							
+							<a class="tag" href="/tags/#mongodb" title="mongodb">mongodb</a>
+							
+						</div>
+						<h1>mongo shell 更新操作</h1>
+						<h2 class="subheading"></h2>
+						<span class="meta">
+							Posted by MF on
+							2018-08-07
+						</span>
+					</div>
+					
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Capisy</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+  <div class="container">
+    <div class="row">
+      <!-- Post Container -->
+      <div
+        class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container"
+      >
+        <h4 id="update-方法"><a href="#update-方法" class="headerlink" title="update 方法"></a>update 方法</h4><blockquote>
+<p>只能更新查询结果集中的第一条数据</p>
+</blockquote>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.user.update(&#123;<span class="string">name:</span><span class="string">'sy'</span>&#125;,&#123;<span class="string">name:</span><span class="string">'sy'</span>,<span class="string">age:</span><span class="number">16</span>&#125;) <span class="comment">// @p1:查询条件 @p2:更新后的文档</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="set-操作符"><a href="#set-操作符" class="headerlink" title="$set 操作符"></a>$set 操作符</h5><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.update</span>(&#123;<span class="attribute">name</span>:<span class="string">'sy'</span>&#125;,&#123;$<span class="attribute">set</span>:&#123;</span><br><span class="line">	<span class="attribute">age</span>:<span class="number">17</span>,</span><br><span class="line">	<span class="attribute">addr</span>:[<span class="string">'Japan'</span>,<span class="string">'Tokyo'</span>]</span><br><span class="line">&#125;&#125;) <span class="comment">// 更新age字段，添加addr字段</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.update</span>(&#123;<span class="attribute">name</span>:<span class="string">'sy'</span>&#125;,&#123;$<span class="attribute">set</span>:&#123;</span><br><span class="line">	<span class="string">'addr.1'</span>:<span class="string">'东京'</span></span><br><span class="line">&#125;&#125;) <span class="comment">// 如果文档的参数为对象或数组的时候用'.'操作符选取</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="unset-操作符"><a href="#unset-操作符" class="headerlink" title="$unset 操作符"></a>$unset 操作符</h5><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">db.<span class="keyword">user</span>.<span class="keyword">update</span>(&#123;<span class="type">name</span>:<span class="string">'sy'</span>&#125;,&#123;$unset:&#123;</span><br><span class="line">	age:<span class="number">0</span></span><br><span class="line">	<span class="string">'addr.1'</span>:<span class="number">0</span></span><br><span class="line">&#125;&#125;) // &#123;<span class="type">name</span>:<span class="string">'sy'</span>,addr:[<span class="string">'Japan'</span>,<span class="keyword">null</span>]&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="rename-操作符"><a href="#rename-操作符" class="headerlink" title="$rename 操作符"></a>$rename 操作符</h5><blockquote>
+<p>$rename中的旧字段和新字段都不可以指向数组元素</p>
+</blockquote>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">db.<span class="keyword">user</span>.<span class="keyword">update</span>(&#123;<span class="type">name</span>:<span class="string">'sy'</span>&#125;,&#123;$<span class="keyword">rename</span>:&#123;</span><br><span class="line">	addr:<span class="string">'location'</span></span><br><span class="line">&#125;&#125;) // &#123;<span class="type">name</span>:<span class="string">'sy'</span>,<span class="keyword">location</span>:[<span class="string">'Japan'</span>,<span class="keyword">null</span>]&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">db.<span class="keyword">user</span>.<span class="keyword">update</span>(&#123;<span class="type">name</span>:<span class="string">'sy'</span>&#125;,&#123;$<span class="keyword">rename</span>:&#123;</span><br><span class="line">	<span class="keyword">location</span>:<span class="string">'info.location'</span></span><br><span class="line">&#125;&#125;) // &#123;<span class="type">name</span>:<span class="string">'sy'</span>,<span class="keyword">info</span>:&#123; <span class="keyword">location</span>:[<span class="string">'Japan'</span>,<span class="keyword">null</span>] &#125; &#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="inc（increment）-操作符"><a href="#inc（increment）-操作符" class="headerlink" title="$inc（increment） 操作符"></a>$inc（increment） 操作符</h5><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.update</span>(&#123;&#125;,&#123;$<span class="attribute">inc</span>:&#123;</span><br><span class="line">	<span class="attribute">age</span>:-<span class="number">1</span></span><br><span class="line">&#125;&#125;) <span class="comment">// 年龄字段的值减一</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="mul-（multiplication-乘法）操作符"><a href="#mul-（multiplication-乘法）操作符" class="headerlink" title="$mul （multiplication:乘法）操作符"></a>$mul （multiplication:乘法）操作符</h5><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.update</span>(&#123;&#125;,&#123;$<span class="attribute">mul</span>:&#123;</span><br><span class="line">	<span class="attribute">balance</span>: <span class="number">0.5</span></span><br><span class="line">&#125;&#125;) <span class="comment">// 余额字段除以2</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="min-和-max-操作符"><a href="#min-和-max-操作符" class="headerlink" title="$min 和 $max 操作符"></a>$min 和 $max 操作符</h5><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.update</span>(&#123;&#125;,&#123;$<span class="attribute">min</span>:&#123;</span><br><span class="line">	<span class="attribute">balance</span>: <span class="number">1000</span></span><br><span class="line">&#125;&#125;) <span class="comment">// 如果更新后的值比原值小则更新，反之不更新</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.update</span>(&#123;&#125;,&#123;$<span class="attribute">max</span>:&#123;</span><br><span class="line">	<span class="attribute">balance</span>: <span class="number">1000</span></span><br><span class="line">&#125;&#125;) <span class="comment">// 如果更新后的值比原值大则更新，反之不更新</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果被更新的字段不存在，$min 和 $max 会创建改字段，并把值设为更新的值</p>
+</blockquote>
+<h5 id="与更新数组字段有关的操作符"><a href="#与更新数组字段有关的操作符" class="headerlink" title="与更新数组字段有关的操作符"></a>与更新数组字段有关的操作符</h5><h6 id="addToSet-向数组字段添加新值"><a href="#addToSet-向数组字段添加新值" class="headerlink" title="$addToSet : 向数组字段添加新值"></a>$addToSet : 向数组字段添加新值</h6><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.update</span>(&#123;&#125;,&#123;$<span class="attribute">addToSet</span>:&#123;</span><br><span class="line">	<span class="attribute">location</span>:<span class="string">'ToKyo'</span></span><br><span class="line">&#125;&#125;) <span class="comment">// 如果数组中没有相同的val则更新数组，反之不更新</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="each：一次向数组字段添加多个新值"><a href="#each：一次向数组字段添加多个新值" class="headerlink" title="$each：一次向数组字段添加多个新值"></a>$each：一次向数组字段添加多个新值</h6><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">db.user.update(&#123;&#125;,&#123;<span class="variable">$addToSet</span>:&#123;</span><br><span class="line">	occupation:&#123;</span><br><span class="line">		<span class="variable">$each</span>:[<span class="string">'actress'</span>,<span class="string">'idol'</span>]</span><br><span class="line">	&#125;</span><br><span class="line">&#125;&#125;) <span class="regexp">//</span> &#123;...,occupation:[<span class="string">'actress'</span>,<span class="string">'idol'</span>]&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="pop：从数组字段中删除元素"><a href="#pop：从数组字段中删除元素" class="headerlink" title="$pop：从数组字段中删除元素"></a>$pop：从数组字段中删除元素</h6><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.update</span>(&#123;&#125;,&#123;$<span class="attribute">pop</span>:&#123;</span><br><span class="line">	<span class="attribute">location</span>:<span class="number">1</span></span><br><span class="line">&#125;&#125;) <span class="comment">// 1:从数组最后删除一个元素，-1：从数组最前删除一个元素</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="pull：从数组字段中删除特定的元素"><a href="#pull：从数组字段中删除特定的元素" class="headerlink" title="$pull：从数组字段中删除特定的元素"></a>$pull：从数组字段中删除特定的元素</h6><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">db.user.update(&#123;&#125;,&#123;<span class="variable">$pull</span><span class="symbol">:</span>&#123;</span><br><span class="line">	<span class="symbol">addr:</span>&#123;</span><br><span class="line">		<span class="variable">$regex</span><span class="symbol">:/^ja/i</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;&#125;) /<span class="regexp">/ &#123;... addr:['ToKyo']&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="：query中匹配的元素"><a href="#：query中匹配的元素" class="headerlink" title="$ ：query中匹配的元素"></a>$ ：query中匹配的元素</h6><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.update</span>(&#123;<span class="attribute">addr</span>:<span class="string">'ToKyo'</span>&#125;,&#123;$<span class="attribute">set</span>:&#123;</span><br><span class="line">	<span class="string">'addr.$'</span>:<span class="string">'东京'</span></span><br><span class="line">&#125;&#125;) <span class="comment">// &#123;...,addr:['东京']&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="一次更新所有查询匹配的数据"><a href="#一次更新所有查询匹配的数据" class="headerlink" title="一次更新所有查询匹配的数据"></a>一次更新所有查询匹配的数据</h5><blockquote>
+<p>@p3:如果查询的匹配结果为空，是否插入新的文档，默认为false</p>
+<p>@p4:默认为false：只更新找到的第一条数据，true:更新所有找到的数据</p>
+</blockquote>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.<span class="keyword">user</span>.<span class="keyword">update</span>(&#123;<span class="type">name</span>:<span class="string">'sy'</span>&#125;,&#123;$<span class="keyword">set</span>:&#123;age:<span class="number">16</span>&#125;&#125;,<span class="keyword">false</span>,<span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="collection-重命名"><a href="#collection-重命名" class="headerlink" title="collection 重命名"></a>collection 重命名</h4><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.user.renameCollection('users'); // <span class="keyword">user</span> <span class="title">-&gt; users</span></span><br></pre></td></tr></table></figure>
+
+
+
+        <hr />
+        <!-- Pager -->
+        <ul class="pager">
+          
+          <li class="previous">
+            <a
+              href="/2018/08/08/mongo-shell-3/"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="mongo shell 聚合管道"
+              >&larr; Previous Post</a
+            >
+          </li>
+           
+          <li class="next">
+            <a
+              href="/2018/08/06/mongo-shell-1/"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="mongo shell 增加、删除、查询操作"
+              >Next Post &rarr;</a
+            >
+          </li>
+          
+        </ul>
+
+        <!-- 来必力City版安装代码 -->
+        
+        <div
+          id="lv-container"
+          data-id="city"
+          data-uid="MTAyMC80NTc4Mi8yMjI5Mw=="
+        >
+          <script type="text/javascript">
+            (function(d, s) {
+              var j,
+                e = d.getElementsByTagName(s)[0];
+
+              if (typeof LivereTower === "function") {
+                return;
+              }
+
+              j = d.createElement(s);
+              j.src = "https://cdn-city.livere.com/js/embed.dist.js";
+              j.async = true;
+
+              e.parentNode.insertBefore(j, e);
+            })(document, "script");
+          </script>
+          <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        
+        <!-- City版安装代码已完成 -->
+      </div>
+
+      <!-- Tabe of Content -->
+      <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#update-方法"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">update 方法</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#set-操作符"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">$set 操作符</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#unset-操作符"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">$unset 操作符</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#rename-操作符"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">$rename 操作符</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#inc（increment）-操作符"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">$inc（increment） 操作符</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#mul-（multiplication-乘法）操作符"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">$mul （multiplication:乘法）操作符</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#min-和-max-操作符"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">$min 和 $max 操作符</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#与更新数组字段有关的操作符"><span class="toc-nav-number">1.7.</span> <span class="toc-nav-text">与更新数组字段有关的操作符</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#addToSet-向数组字段添加新值"><span class="toc-nav-number">1.7.1.</span> <span class="toc-nav-text">$addToSet : 向数组字段添加新值</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#each：一次向数组字段添加多个新值"><span class="toc-nav-number">1.7.2.</span> <span class="toc-nav-text">$each：一次向数组字段添加多个新值</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#pop：从数组字段中删除元素"><span class="toc-nav-number">1.7.3.</span> <span class="toc-nav-text">$pop：从数组字段中删除元素</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#pull：从数组字段中删除特定的元素"><span class="toc-nav-number">1.7.4.</span> <span class="toc-nav-text">$pull：从数组字段中删除特定的元素</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#：query中匹配的元素"><span class="toc-nav-number">1.7.5.</span> <span class="toc-nav-text">$ ：query中匹配的元素</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#一次更新所有查询匹配的数据"><span class="toc-nav-number">1.8.</span> <span class="toc-nav-text">一次更新所有查询匹配的数据</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#collection-重命名"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">collection 重命名</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+    </div>
+  </div>
+</article>
+
+  
+<!-- async load function -->
+<script>
+  function async(u, c) {
+    var d = document,
+      t = "script",
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) {
+      o.addEventListener(
+        "load",
+        function(e) {
+          c(null, e);
+        },
+        false
+      );
+    }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+  async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js", function() {
+    anchors.options = {
+      visible: "hover",
+      placement: "left",
+      icon: "ℬ"
+    };
+    anchors
+      .add()
+      .remove(".intro-header h1")
+      .remove(".subheading")
+      .remove(".sidebar-container h5");
+  });
+</script>
+<style>
+  /* place left on bigger screen */
+  @media all and (min-width: 800px) {
+    .anchorjs-link {
+      position: absolute;
+      left: -0.75em;
+      font-size: 1.1em;
+      margin-top: -0.1em;
+    }
+  }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer style="padding-top:20px;padding-bottom:30px;text-align: center;font-size:14px;color:#666;">
+    Copyright &copy; MF 2020
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if ($('#tag_cloud').length !== 0) {
+        async("https://capisy.github.io/js/jquery.tagcloud.js", function () {
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: { start: '#bbbbee', end: '#0085a1' },
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+    <a id="rocket" href="#top" class=""></a>
+    <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+    <!-- Image to hack wechat -->
+    <!-- <img src="https://capisy.github.io/img/icon_wechat.png" width="0" height="0" /> -->
+    <!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

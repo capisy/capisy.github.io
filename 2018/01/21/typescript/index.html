@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="screen-orientation" content="portrait">
+  <meta name="full-screen" content="yes">
+  <meta name="browsermode" content="application">
+  <meta name="x5-orientation" content="portrait">
+  <meta name="x5-fullscreen" content="true">
+  <meta name="x5-page-mode" content="app">
+  <meta name="description" content="capisy.cn，web前端，全栈，koa，eggjs，vue，react，https://capisy.cn">
+  <meta name="keyword" content="web前端，全栈，koa，eggjs，vue，react">
+  <link rel="shortcut icon" href="/favicon.png">
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <title>
+     TS小记 - 晓の博客-capisy.cn 
+  </title>
+
+  <link rel="canonical" href="https://capisy.github.io/2018/01/21/typescript/">
+
+  <!-- Bootstrap Core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/beantech.min.css">
+
+  <!-- Pygments Highlight CSS -->
+  <link rel="stylesheet" href="/css/highlight.css"> <link rel="stylesheet" href="/css/widget.css"> <link rel="stylesheet" href="/css/rocket.css">
+  <link rel="stylesheet" href="/css/signature.css"> <link rel="stylesheet" href="/css/toc.css">
+
+  <!-- Custom Fonts -->
+  <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+  <!-- Hux change font-awesome CDN to qiniu -->
+  <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- ga & ba script hoook -->
+  <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+
+<body ontouchstart="">
+    <!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+	header.intro-header {
+		background-image: url('/images/home-bg.jpg')
+	}
+</style>
+
+<header class="intro-header">
+	<!-- Signature -->
+	<div id="signature">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+					
+					<div class="post-heading">
+						<div class="tags">
+							
+							<a class="tag" href="/tags/#typescript" title="typescript">typescript</a>
+							
+						</div>
+						<h1>TS小记</h1>
+						<h2 class="subheading"></h2>
+						<span class="meta">
+							Posted by MF on
+							2018-01-21
+						</span>
+					</div>
+					
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Capisy</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+  <div class="container">
+    <div class="row">
+      <!-- Post Container -->
+      <div
+        class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container"
+      >
+        <h4 id="数组的两种声明方式"><a href="#数组的两种声明方式" class="headerlink" title="数组的两种声明方式"></a>数组的两种声明方式</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> list1:<span class="built_in">number</span>[] = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> list2:<span class="built_in">Array</span>&lt;<span class="built_in">string</span>&gt; = [<span class="string">'mf'</span>] <span class="comment">// 泛型数组</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="二维数组"><a href="#二维数组" class="headerlink" title="二维数组"></a>二维数组</h5><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> list3:number[][] = [</span><br><span class="line">	[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],</span><br><span class="line">	[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h5 id="元组类型"><a href="#元组类型" class="headerlink" title="元组类型"></a>元组类型</h5><blockquote>
+<p>元组和数组类似，只不过元组是一种<strong>固定长度的数组，每个元素有自己的类型</strong>。</p>
+</blockquote>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> x:[<span class="built_in">string</span>,<span class="built_in">number</span>] = [<span class="string">'yjy'</span>,<span class="number">16</span>]</span><br></pre></td></tr></table></figure>
+
+<h4 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h4><h5 id="声明和实例化"><a href="#声明和实例化" class="headerlink" title="声明和实例化"></a>声明和实例化</h5><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> IPerson &#123;</span><br><span class="line">  name: <span class="built_in">string</span>,</span><br><span class="line">  age: <span class="built_in">number</span>,</span><br><span class="line">  loving: <span class="built_in">string</span>[],</span><br><span class="line">  sex?: <span class="string">'male'</span> | <span class="string">'famale'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> mf: IPerson = &#123;</span><br><span class="line">  name: <span class="string">'mf'</span>,</span><br><span class="line">  age: <span class="number">27</span>,</span><br><span class="line">  loving: [<span class="string">'zcj'</span>, <span class="string">'yjy'</span>],</span><br><span class="line">  sex: <span class="string">'male'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="接口允许有任意属性"><a href="#接口允许有任意属性" class="headerlink" title="接口允许有任意属性"></a>接口允许有任意属性</h5><p>一旦定义了任意属性，那么确定属性和可选属性的类型必须是它类型的子集</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="symbol">IPerson</span>&#123;</span><br><span class="line">	[propName:<span class="built_in">string</span>]:any</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="接口的只读属性定义"><a href="#接口的只读属性定义" class="headerlink" title="接口的只读属性定义"></a>接口的只读属性定义</h5><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="symbol">IPerson</span>&#123;</span><br><span class="line">	readonly name:<span class="built_in">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="函数的定义"><a href="#函数的定义" class="headerlink" title="函数的定义"></a>函数的定义</h4><h5 id="普通函数"><a href="#普通函数" class="headerlink" title="普通函数"></a>普通函数</h5><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="function"><span class="keyword">func</span> = <span class="params">(a:number,b:<span class="keyword">string</span>)</span>:<span class="title">string</span> =&gt; <span class="title">a</span>+<span class="title">b</span></span></span><br></pre></td></tr></table></figure>
+
+<h5 id="可选参数"><a href="#可选参数" class="headerlink" title="可选参数"></a>可选参数</h5><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> func2 = (a: <span class="built_in">string</span>, b?: <span class="built_in">string</span>): <span class="function"><span class="params">string</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> b ? <span class="string">`<span class="subst">$&#123;a&#125;</span> <span class="subst">$&#123;b&#125;</span>`</span> : a</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="参数的默认值"><a href="#参数的默认值" class="headerlink" title="参数的默认值"></a>参数的默认值</h5><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> func4 = <span class="function">(<span class="params">a:<span class="built_in">string</span>,b:<span class="built_in">string</span>='yjy'</span>) =&gt;</span> <span class="string">`<span class="subst">$&#123;a&#125;</span> <span class="subst">$&#123;b&#125;</span>`</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="用接口定义函数"><a href="#用接口定义函数" class="headerlink" title="用接口定义函数"></a>用接口定义函数</h5><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> IFunc &#123;</span><br><span class="line">  (a: <span class="built_in">string</span>, b: <span class="built_in">string</span>): <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> func3: IFunc = <span class="function">(<span class="params">a, b</span>) =&gt;</span> a + b</span><br></pre></td></tr></table></figure>
+
+<h4 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h4><blockquote>
+<p>解决类、接口、函数的复用性，以及对不特定数据类型的支持</p>
+<p>说人话，数据的类型跟根据调用时的数据类型决定的，表示的参数是什么就返回什么类型</p>
+</blockquote>
+<h5 id="泛型定义函数"><a href="#泛型定义函数" class="headerlink" title="泛型定义函数"></a>泛型定义函数</h5><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title">getValue&lt;T&gt;</span>(value:T):T&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="type">value</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">getValue&lt;string&gt;(<span class="symbol">'yjy</span>')</span><br><span class="line">getValue&lt;boolean&gt;(<span class="literal">true</span>)</span><br></pre></td></tr></table></figure>
+
+<h5 id="泛型定义接口的两种方式"><a href="#泛型定义接口的两种方式" class="headerlink" title="泛型定义接口的两种方式"></a>泛型定义接口的两种方式</h5><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> IFunc&#123;</span><br><span class="line">	&lt;T&gt;(value:T):T</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> getVal2:IFunc = <span class="function"><span class="params">val</span> =&gt;</span> val</span><br><span class="line">getValue&lt;<span class="built_in">string</span>&gt;(<span class="string">'yjy'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> IFunc2&lt;T&gt;&#123;</span><br><span class="line">	(value:T):T</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> getVal3:IFunc&lt;<span class="built_in">string</span>&gt; = <span class="function"><span class="params">val</span> =&gt;</span> val</span><br><span class="line">getVal3(<span class="string">'yjy'</span>)</span><br></pre></td></tr></table></figure>
+
+<h5 id="泛型定义类"><a href="#泛型定义类" class="headerlink" title="泛型定义类"></a>泛型定义类</h5><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Identity&lt;T1, T2&gt;&#123;</span><br><span class="line">  <span class="keyword">public</span> p1: T1  <span class="comment">// public可省略</span></span><br><span class="line">  <span class="keyword">private</span> p2: T2</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params">p1: T1, p2: T2</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.p1 = p1</span><br><span class="line">    <span class="keyword">this</span>.p2 = p2</span><br><span class="line">  &#125;</span><br><span class="line">  getP1(): T1 &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.p1</span><br><span class="line">  &#125;</span><br><span class="line">  showP2(): <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.p2)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> mf = <span class="keyword">new</span> Identity&lt;<span class="built_in">string</span>, <span class="built_in">number</span>&gt;(<span class="string">'yjy'</span>, <span class="number">16</span>)</span><br></pre></td></tr></table></figure>
+
+<h5 id="泛型约束"><a href="#泛型约束" class="headerlink" title="泛型约束"></a>泛型约束</h5><p>问题: 不能确定T是否具有length属性，会报错</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const getLength = <span class="symbol">&lt;T&gt;</span>(<span class="keyword">ar</span><span class="variable">g:</span> T): <span class="keyword">number</span> =&gt; arg.length</span><br></pre></td></tr></table></figure>
+
+<p>解决方法:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> IWithLenght&#123;</span><br><span class="line">  length:<span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> getLength = &lt;T <span class="keyword">extends</span> IWithLenght&gt;(arg: T): <span class="function"><span class="params">number</span> =&gt;</span> arg.length</span><br></pre></td></tr></table></figure>
+
+<h6 id="泛型约束设置默认类型"><a href="#泛型约束设置默认类型" class="headerlink" title="泛型约束设置默认类型"></a>泛型约束设置默认类型</h6><p>问题：如果大多数情况下T的类型都为string，每次都要声明会很麻烦</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">interface</span> <span class="selector-tag">IMyTyp</span>&lt;<span class="selector-tag">T</span>&gt;&#123;</span><br><span class="line">	<span class="attribute">value</span>:T</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">let</span> <span class="selector-tag">a</span><span class="selector-pseudo">:IMyTyp</span>&lt;<span class="selector-tag">string</span>&gt;&#123;</span><br><span class="line">	<span class="attribute">value</span>:<span class="string">'hello world'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解决：</p>
+<figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> IMyTyp<span class="number">2</span>&lt;T=string&gt;&#123;</span><br><span class="line">	<span class="keyword">value</span>:T</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> b:IMyTyp<span class="number">2</span>=&#123;</span><br><span class="line">	<span class="keyword">value</span>:<span class="string">'hello !'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> c:IMyTyp<span class="number">2</span>&lt;number&gt;=&#123;</span><br><span class="line">	<span class="keyword">value</span>:<span class="number">123</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h4><h5 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h5><blockquote>
+<p>命名空间引入了新的作用域，大括号可以包含任意合法的代码</p>
+<p>要在命名空间之外访问命名空间内的成员，必须使用export关键字</p>
+</blockquote>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">ns</span>&#123;</span><br><span class="line">	export <span class="keyword">const</span> a:<span class="keyword">string</span> = <span class="string">'hello world'</span></span><br><span class="line">	<span class="keyword">const</span> b:<span class="keyword">string</span> = <span class="string">'hi world'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> c:<span class="keyword">string</span> = ns.a <span class="comment">// √</span></span><br><span class="line"><span class="keyword">const</span> d:<span class="keyword">string</span> = ns.b <span class="comment">// ×</span></span><br></pre></td></tr></table></figure>
+
+<p>实现原理：立即执行函数</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var ns<span class="comment">;</span></span><br><span class="line">(<span class="name">function</span> (<span class="name">ns</span>) &#123;</span><br><span class="line">    ns.a = 'hello world'<span class="comment">;</span></span><br><span class="line">    var b = 'hi ts'<span class="comment">;</span></span><br><span class="line">&#125;)(<span class="name">ns</span> || (<span class="name">ns</span> = &#123;&#125;))<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="空间拆分"><a href="#空间拆分" class="headerlink" title="空间拆分"></a>空间拆分</h5><blockquote>
+<p>命名空间可以拆分，代码量大时可以提高可维护性</p>
+<p>拆分的代码块之间的成员无法互相访问</p>
+<p>访问需要export 导出</p>
+</blockquote>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> ns&#123;</span><br><span class="line">	<span class="keyword">const</span> a:<span class="built_in">number</span></span><br><span class="line">	<span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">showA</span>(<span class="params"></span>):<span class="title">void</span></span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> ns&#123;</span><br><span class="line">	<span class="keyword">const</span> b:<span class="built_in">number</span> = a + <span class="number">1</span> <span class="comment">// ×</span></span><br><span class="line">	showA() <span class="comment">// √</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="空间嵌套"><a href="#空间嵌套" class="headerlink" title="空间嵌套"></a>空间嵌套</h5><blockquote>
+<p>作用域为{}，作用域外不可访问</p>
+</blockquote>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="symbol">ns</span> &#123;</span><br><span class="line">  <span class="keyword">namespace</span> <span class="symbol">subNs</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> a:<span class="built_in">string</span> = <span class="string">'yjy'</span></span><br><span class="line">    export <span class="keyword">const</span> b:<span class="built_in">string</span> = <span class="string">'yjy'</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> c:<span class="built_in">string</span> = subNs.a <span class="comment">// ×</span></span><br><span class="line">  <span class="keyword">const</span> d:<span class="built_in">string</span> = subNs.b <span class="comment">// √</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>访问嵌套空间内的属性，嵌套空间也需要export</p>
+</blockquote>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="symbol">ns</span> &#123;</span><br><span class="line">  export <span class="keyword">namespace</span> <span class="symbol">subNs</span>&#123;</span><br><span class="line">    export <span class="keyword">const</span> e:<span class="built_in">string</span> = <span class="string">'yjy'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> f:<span class="built_in">string</span> = ns.subNs.e</span><br></pre></td></tr></table></figure>
+
+<h4 id="类类型"><a href="#类类型" class="headerlink" title="类类型"></a>类类型</h4><h5 id="类类型中可以把实例属性和静态属性直接定义在类内部"><a href="#类类型中可以把实例属性和静态属性直接定义在类内部" class="headerlink" title="类类型中可以把实例属性和静态属性直接定义在类内部"></a>类类型中可以把实例属性和静态属性直接定义在类内部</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// es6</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span></span>&#123;</span><br><span class="line">	<span class="keyword">constructor</span>()&#123;</span><br><span class="line">		<span class="keyword">this</span>.test = <span class="string">'hi'</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">Foo.test1 = <span class="string">'world'</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ts</span></span><br><span class="line"><span class="comment">// 推荐写法</span></span><br><span class="line"><span class="keyword">class</span> Foo&#123;</span><br><span class="line">	test:<span class="built_in">string</span> = <span class="string">'hi'</span> <span class="comment">// test属性必须先声明再使用</span></span><br><span class="line">	<span class="keyword">constructor</span>(<span class="params">test:<span class="built_in">string</span></span>)&#123;</span><br><span class="line">		<span class="keyword">this</span>.test = test </span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 另外一种写法</span></span><br><span class="line"><span class="keyword">class</span> Foo&#123;</span><br><span class="line">	<span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> test:<span class="built_in">string</span></span>)&#123;</span><br><span class="line">		<span class="keyword">this</span>.test = test</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ts</span></span><br><span class="line"><span class="comment">// 静态属性：只能由构造器调用的属性</span></span><br><span class="line"><span class="keyword">class</span> <span class="title">Foo</span>&#123;</span><br><span class="line">	<span class="keyword">static</span> test1:<span class="keyword">string</span> = <span class="string">'world'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="抽象类和抽象方法"><a href="#抽象类和抽象方法" class="headerlink" title="抽象类和抽象方法"></a>抽象类和抽象方法</h5><blockquote>
+<p>抽象类和抽象方法都由关键字abstract声明</p>
+<p>抽象方法没有函数体，由继承的子类(派生类)实现</p>
+<p>一个类包含抽象方法，这个类必须是抽象类</p>
+<p>抽象类可以没有抽象方法</p>
+</blockquote>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Father</span></span>&#123;</span><br><span class="line">	<span class="keyword">abstract</span> showMsg(name:string):string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span></span>&#123;</span><br><span class="line">	showMsg(name:string)&#123;</span><br><span class="line">		<span class="keyword">return</span> `<span class="type">My</span> name is $&#123;name&#125;`</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+        <hr />
+        <!-- Pager -->
+        <ul class="pager">
+          
+          <li class="previous">
+            <a
+              href="/2018/01/30/linux-swap/"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="虚拟内存&kxsw"
+              >&larr; Previous Post</a
+            >
+          </li>
+           
+          <li class="next">
+            <a
+              href="/2017/12/30/helper-drag-prototype/"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="拖拽(原型版本)"
+              >Next Post &rarr;</a
+            >
+          </li>
+          
+        </ul>
+
+        <!-- 来必力City版安装代码 -->
+        
+        <div
+          id="lv-container"
+          data-id="city"
+          data-uid="MTAyMC80NTc4Mi8yMjI5Mw=="
+        >
+          <script type="text/javascript">
+            (function(d, s) {
+              var j,
+                e = d.getElementsByTagName(s)[0];
+
+              if (typeof LivereTower === "function") {
+                return;
+              }
+
+              j = d.createElement(s);
+              j.src = "https://cdn-city.livere.com/js/embed.dist.js";
+              j.async = true;
+
+              e.parentNode.insertBefore(j, e);
+            })(document, "script");
+          </script>
+          <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        
+        <!-- City版安装代码已完成 -->
+      </div>
+
+      <!-- Tabe of Content -->
+      <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#数组的两种声明方式"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">数组的两种声明方式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#二维数组"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">二维数组</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#元组类型"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">元组类型</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#接口"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">接口</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#声明和实例化"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">声明和实例化</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#接口允许有任意属性"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">接口允许有任意属性</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#接口的只读属性定义"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">接口的只读属性定义</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#函数的定义"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">函数的定义</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#普通函数"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">普通函数</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#可选参数"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">可选参数</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#参数的默认值"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">参数的默认值</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#用接口定义函数"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">用接口定义函数</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#泛型"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">泛型</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#泛型定义函数"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">泛型定义函数</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#泛型定义接口的两种方式"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">泛型定义接口的两种方式</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#泛型定义类"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">泛型定义类</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#泛型约束"><span class="toc-nav-number">4.4.</span> <span class="toc-nav-text">泛型约束</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#泛型约束设置默认类型"><span class="toc-nav-number">4.4.1.</span> <span class="toc-nav-text">泛型约束设置默认类型</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#命名空间"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">命名空间</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#语法"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">语法</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#空间拆分"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">空间拆分</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#空间嵌套"><span class="toc-nav-number">5.3.</span> <span class="toc-nav-text">空间嵌套</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#类类型"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">类类型</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#类类型中可以把实例属性和静态属性直接定义在类内部"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">类类型中可以把实例属性和静态属性直接定义在类内部</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#抽象类和抽象方法"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">抽象类和抽象方法</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+    </div>
+  </div>
+</article>
+
+  
+<!-- async load function -->
+<script>
+  function async(u, c) {
+    var d = document,
+      t = "script",
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) {
+      o.addEventListener(
+        "load",
+        function(e) {
+          c(null, e);
+        },
+        false
+      );
+    }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+  async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js", function() {
+    anchors.options = {
+      visible: "hover",
+      placement: "left",
+      icon: "ℬ"
+    };
+    anchors
+      .add()
+      .remove(".intro-header h1")
+      .remove(".subheading")
+      .remove(".sidebar-container h5");
+  });
+</script>
+<style>
+  /* place left on bigger screen */
+  @media all and (min-width: 800px) {
+    .anchorjs-link {
+      position: absolute;
+      left: -0.75em;
+      font-size: 1.1em;
+      margin-top: -0.1em;
+    }
+  }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer style="padding-top:20px;padding-bottom:30px;text-align: center;font-size:14px;color:#666;">
+    Copyright &copy; MF 2020
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if ($('#tag_cloud').length !== 0) {
+        async("https://capisy.github.io/js/jquery.tagcloud.js", function () {
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: { start: '#bbbbee', end: '#0085a1' },
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+    <a id="rocket" href="#top" class=""></a>
+    <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+    <!-- Image to hack wechat -->
+    <!-- <img src="https://capisy.github.io/img/icon_wechat.png" width="0" height="0" /> -->
+    <!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

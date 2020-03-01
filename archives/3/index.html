@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="screen-orientation" content="portrait">
+  <meta name="full-screen" content="yes">
+  <meta name="browsermode" content="application">
+  <meta name="x5-orientation" content="portrait">
+  <meta name="x5-fullscreen" content="true">
+  <meta name="x5-page-mode" content="app">
+  <meta name="description" content="capisy.cn，web前端，全栈，koa，eggjs，vue，react，https://capisy.cn">
+  <meta name="keyword" content="web前端，全栈，koa，eggjs，vue，react">
+  <link rel="shortcut icon" href="/favicon.png">
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <title>
+     晓の博客-capisy.cn 
+  </title>
+
+  <link rel="canonical" href="https://capisy.github.io/archives/3/">
+
+  <!-- Bootstrap Core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/beantech.min.css">
+
+  <!-- Pygments Highlight CSS -->
+  <link rel="stylesheet" href="/css/highlight.css"> <link rel="stylesheet" href="/css/widget.css"> <link rel="stylesheet" href="/css/rocket.css">
+  <link rel="stylesheet" href="/css/signature.css"> <link rel="stylesheet" href="/css/toc.css">
+
+  <!-- Custom Fonts -->
+  <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+  <!-- Hux change font-awesome CDN to qiniu -->
+  <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- ga & ba script hoook -->
+  <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+
+<body ontouchstart="">
+    <!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+	header.intro-header {
+		background-image: url('/images/home-bg.jpg')
+	}
+</style>
+
+<header class="intro-header">
+	<!-- Signature -->
+	<div id="signature">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+					
+					<div class="site-heading">
+						<h1>晓。心晴</h1>
+						<!--<hr class="small">-->
+						<span class="subheading">WELCOME TO MY BLOG.</span>
+					</div>
+					
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Capisy</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Main Content -->
+<div class="container">
+    <div class="row">
+        
+
+<!-- USE SIDEBAR -->
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
+            
+                <!-- Main Content -->
+
+
+<div class="post-preview">
+
+    <a href="/2018/01/31/vue-router/">
+        <h2 class="post-title">
+            vue-router
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            初始化1234567891011121314new Router(&#123;  routes, // 路由配置  mode: "history",  fallback:true,  linkExactActiveClass: "exact-active",  linkActiveClass: "active",  scrollBehavior(to,from,savedPosition)&......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by MF on
+            2018-01-31
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#vue" title="vue">vue</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/01/31/Linux-chmod/">
+        <h2 class="post-title">
+            权限管理
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            查看文件权限1ls -l
+
+
+文件权限
+读权限，表示你可以使用 cat  之类的命令来读取某个文件的内容；
+写权限，表示你可以编辑和修改某个文件；
+执行权限，通常指可以运行的二进制程序文件或者脚本文件，如同 Windows 上的 exe 后缀的文件，不过 Linux 上不是通过文件后缀名来区分文件的类型。
+
+一个目录同时具有读权限和执行权限才可以打开并查看内部文件，而一个目录要有写权限才允许......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by MF on
+            2018-01-31
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/01/30/Linux-user/">
+        <h2 class="post-title">
+            用户管理
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            查看用户12who am i //输出用户名，终端序号，终端启动时间whoami //输出用户名
+
+创建用户一般登录系统的时候都是以普通用户的身份登录的，要创建用户需要 root 权限。这里就要用到 sodu（switch user do）,使用 sudo 命名的两个前提条件
+
+知道当前登录用户的密码
+当前用户必须在 sudo 用户组
+
+12su &lt;user&gt; //切换到用户us......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by MF on
+            2018-01-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/01/30/linux-swap/">
+        <h2 class="post-title">
+            虚拟内存&kxsw
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            查看磁盘空间1df -hl // 查看磁盘使用情况
+
+12du  -sh &lt;文件夹名&gt;  // 查看文件夹大小du  -sh *  // 查看当前文件夹内所有文件大小
+
+查看内存使用情况1free -hl
+
+内存不够用，设置 swap1234567891011mkdir -p /opt/tempdd if=/dev/zero of=/opt/temp/swap bs=1024 c......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by MF on
+            2018-01-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/01/21/typescript/">
+        <h2 class="post-title">
+            TS小记
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            数组的两种声明方式123const list1:number[] = [1,2,3]const list2:Array&lt;string&gt; = ['mf'] // 泛型数组
+
+二维数组1234const list3:number[][] = [	[1,2,3],	[4,5,6]]
+
+元组类型
+元组和数组类似，只不过元组是一种固定长度的数组，每个元素有自己的类型。
+
+1const x:......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by MF on
+            2018-01-21
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#typescript" title="typescript">typescript</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/12/30/helper-drag-prototype/">
+        <h2 class="post-title">
+            拖拽(原型版本)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            123456789const inherit = (function() &#123;	var F = function() &#123;&#125;	return function(Target, Origin) &#123;		F.prototype = Origin.prototype		Target.prototype = new F()		Target.prototype.cons......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by MF on
+            2017-12-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#JS_HELPER" title="JS_HELPER">JS_HELPER</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/12/30/helper-validate/">
+        <h2 class="post-title">
+            表单验证
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182class ValidateBase &#123;	constructor(rule......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by MF on
+            2017-12-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#JS_HELPER" title="JS_HELPER">JS_HELPER</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/12/30/helper-drag-class/">
+        <h2 class="post-title">
+            拖拽(class版本)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            12345678910111213141516171819202122232425262728293031323334353637383940414243class Drag &#123;	constructor(el) &#123;		this.$el = el		this.clientX = 0		this.clientY = 0	&#125;	init() &#123;		this.$......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by MF on
+            2017-12-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#JS_HELPER" title="JS_HELPER">JS_HELPER</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2013/05/10/memory-20130510/">
+        <h2 class="post-title">
+            漫过四月天
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            天空似乎比心情还要善变，雨丝在阳光的缝隙偷偷溜出显得很有线条感不经意一瞥，已经五月十号了。时光从指间划过，带走点点余温日子还是平淡到无味，麻木了太久， 就不会大喜大悲
+有时候总是会强迫自己更理性一点，天性使然，不喜欢过得太复杂时常还是会一意孤行，疏忽了别人，为难了自己太自我是会伤害到别人的，而最终更受伤的会是自己唯美的意境源自不确定的朦胧，那些不真实的真实珍藏就好
+中午的时候，看见三教前面的......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by MF on
+            2013-05-10
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#时光印记" title="时光印记">时光印记</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+
+
+<!-- Pager -->
+
+<ul class="pager">
+    
+        <li class="previous">
+            <a href="/archives/2/">&larr; Newer Posts</a>
+        </li>
+    
+    
+</ul>
+
+
+
+                <!-- 如果开启评论功能 -->
+                
+            </div>
+
+          <!-- Sidebar Container -->
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+        <!-- Featured Tags -->
+
+<section>
+    <!-- no hr -->
+    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+            
+            <a href="/tags/#Linux" title="Linux" rel="3">Linux</a>
+            
+        
+            
+        
+            
+            <a href="/tags/#JS_HELPER" title="JS_HELPER" rel="3">JS_HELPER</a>
+            
+        
+            
+        
+            
+            <a href="/tags/#mongodb" title="mongodb" rel="4">mongodb</a>
+            
+        
+            
+            <a href="/tags/#php" title="php" rel="9">php</a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+            <a href="/tags/#vue" title="vue" rel="4">vue</a>
+            
+        
+            
+        
+    </div>
+</section>
+
+        <hr>
+    
+        <!-- Short About -->
+<section class="visible-md visible-lg">
+    <h5><a href="/about/">ABOUT ME</a></h5>
+    <div class="short-about">
+
+        
+        <img id="avatar_pic" src="/images/mf-avatar.jpg" />
+        
+
+        <!-- 
+        <p>capisy</p>
+         -->
+
+        <!-- SNS Link -->
+        <ul class="list-inline">
+            <li>
+                <a target="_blank" href="https://github.com/capisy">github:github.com/capisy</a>
+            </li>
+            <li>
+                <a href="mailto:mfyj04@gmail.com" target="_blank" rel="noopener noreferrer">邮箱:mfyj04@gmail.com</a>
+            </li>
+            <li>
+                微信/QQ：593903956
+            </li>
+        </ul>
+    </div>
+</section>
+        <hr>
+    
+        
+  <h5>RECENT POSTS</h3>
+  <div class="widget">
+    <ul>
+      
+        <li>
+          <a href="/2019/08/09/php-oop-6/">面向对象-继承和多态</a>
+        </li>
+      
+        <li>
+          <a href="/2019/08/07/php-oop-5/">面向对象-封装</a>
+        </li>
+      
+        <li>
+          <a href="/2019/08/06/php-oop-4/">面向对象-类的静态属性和静态方法</a>
+        </li>
+      
+        <li>
+          <a href="/2019/08/05/php-oop-3/">面向对象-类的自动加载</a>
+        </li>
+      
+        <li>
+          <a href="/2019/08/04/php-opp-2/">面向对象-访问修饰符</a>
+        </li>
+      
+    </ul>
+  </div>
+
+        <hr>
+    
+        
+    <h5>ARCHIVES</h5>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+
+        <hr>
+    
+</div>
+
+        
+    </div>
+</div>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer style="padding-top:20px;padding-bottom:30px;text-align: center;font-size:14px;color:#666;">
+    Copyright &copy; MF 2020
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if ($('#tag_cloud').length !== 0) {
+        async("https://capisy.github.io/js/jquery.tagcloud.js", function () {
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: { start: '#bbbbee', end: '#0085a1' },
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+    <a id="rocket" href="#top" class=""></a>
+    <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+    <!-- Image to hack wechat -->
+    <!-- <img src="https://capisy.github.io/img/icon_wechat.png" width="0" height="0" /> -->
+    <!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

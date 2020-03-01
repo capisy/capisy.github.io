@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="screen-orientation" content="portrait">
+  <meta name="full-screen" content="yes">
+  <meta name="browsermode" content="application">
+  <meta name="x5-orientation" content="portrait">
+  <meta name="x5-fullscreen" content="true">
+  <meta name="x5-page-mode" content="app">
+  <meta name="description" content="capisy.cn，web前端，全栈，koa，eggjs，vue，react，https://capisy.cn">
+  <meta name="keyword" content="web前端，全栈，koa，eggjs，vue，react">
+  <link rel="shortcut icon" href="/favicon.png">
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <title>
+     基础-函数篇 - 晓の博客-capisy.cn 
+  </title>
+
+  <link rel="canonical" href="https://capisy.github.io/2019/03/31/php-func/">
+
+  <!-- Bootstrap Core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/beantech.min.css">
+
+  <!-- Pygments Highlight CSS -->
+  <link rel="stylesheet" href="/css/highlight.css"> <link rel="stylesheet" href="/css/widget.css"> <link rel="stylesheet" href="/css/rocket.css">
+  <link rel="stylesheet" href="/css/signature.css"> <link rel="stylesheet" href="/css/toc.css">
+
+  <!-- Custom Fonts -->
+  <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+  <!-- Hux change font-awesome CDN to qiniu -->
+  <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- ga & ba script hoook -->
+  <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+
+<body ontouchstart="">
+    <!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+	header.intro-header {
+		background-image: url('/images/home-bg.jpg')
+	}
+</style>
+
+<header class="intro-header">
+	<!-- Signature -->
+	<div id="signature">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+					
+					<div class="post-heading">
+						<div class="tags">
+							
+							<a class="tag" href="/tags/#php" title="php">php</a>
+							
+						</div>
+						<h1>基础-函数篇</h1>
+						<h2 class="subheading"></h2>
+						<span class="meta">
+							Posted by MF on
+							2019-03-31
+						</span>
+					</div>
+					
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Capisy</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+  <div class="container">
+    <div class="row">
+      <!-- Post Container -->
+      <div
+        class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container"
+      >
+        <h4 id="设置文件头信息"><a href="#设置文件头信息" class="headerlink" title="设置文件头信息"></a>设置文件头信息</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">header(<span class="string">'content-type:text/html;charset=utf-8'</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="日期、时间函数"><a href="#日期、时间函数" class="headerlink" title="日期、时间函数"></a>日期、时间函数</h4><p>设置当前时区为中国</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">date_default_timezone_set(<span class="string">'PRC'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>时间戳</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">time();</span><br></pre></td></tr></table></figure>
+
+<p>获取日期时间</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$cur_date = date(<span class="string">'Y-m-d H:i:s'</span>);</span><br><span class="line"><span class="comment">// 根据时间戳获取时间</span></span><br><span class="line">$special_date = data(<span class="string">'Y-m-d H:i:s'</span>,time());</span><br></pre></td></tr></table></figure>
+
+<p>获取星期信息</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$arr_days = [<span class="string">'星期日'</span>,<span class="string">'星期一'</span>,<span class="string">'星期二'</span>,<span class="string">'星期三'</span>,<span class="string">'星期四'</span>,<span class="string">'星期五'</span>,<span class="string">'星期六'</span>];</span><br><span class="line">$today_day = date(<span class="string">'w'</span>); <span class="comment">// 获取当前是一个星期的第几天</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">"今天是&#123;$arr_day[$today_day]&#125;"</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="数学函数"><a href="#数学函数" class="headerlink" title="数学函数"></a>数学函数</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 随机数函数</span></span><br><span class="line">mt_rand(min,max);</span><br><span class="line"><span class="keyword">echo</span> mt_rand(<span class="number">0</span>,<span class="number">255</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 取整函数</span></span><br><span class="line">$num_ceil = ceil(<span class="number">3.14</span>) <span class="comment">// 4</span></span><br><span class="line">$num_floor = floor(<span class="number">3.14</span>) <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// @ param1:需要四色五入的数</span></span><br><span class="line"><span class="comment">// @ param2:保留到小数点后几位</span></span><br><span class="line">$num_round = round(<span class="number">3.1419526</span>,<span class="number">2</span>);  <span class="comment">// 3.14</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//最大值和最小值</span></span><br><span class="line">$max = max(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>); <span class="comment">// 3 </span></span><br><span class="line">$min = min(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>); <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 数字格式化，以千位分隔符形式转换</span></span><br><span class="line"><span class="comment">// @ params1: 格式化的数</span></span><br><span class="line"><span class="comment">// @ params2：保留到小数点后几位</span></span><br><span class="line">$format_num = number_format(<span class="number">111222333.444555</span>,<span class="number">2</span>); <span class="comment">// 111,222,333.44</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="字符串相关的函数"><a href="#字符串相关的函数" class="headerlink" title="字符串相关的函数"></a>字符串相关的函数</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取字符串长度</span></span><br><span class="line">$str = <span class="string">'mfyj'</span>;</span><br><span class="line">$len = strlen($str)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 字符串大小写转换</span></span><br><span class="line">$str = <span class="string">'wish you have a good ending '</span>;</span><br><span class="line">$toUpper = strToUpper($str);</span><br><span class="line">$toLower = strToLower($str);</span><br><span class="line">$ucFirst = ucFirst($str); <span class="comment">// 句子的首字母转换为大写</span></span><br><span class="line">$ucWords = ucWords($str); <span class="comment">// 句子的每个单词首字母转换为大写</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 字符串替换</span></span><br><span class="line">$str = <span class="string">'mdZz'</span>;</span><br><span class="line">$str2 = str_replace(<span class="string">'z'</span>,<span class="string">' hello'</span>,$str); <span class="comment">// 区分大小写</span></span><br><span class="line">$str3 = str_ireplace(<span class="string">'z'</span>,<span class="string">' hello'</span>,$str); <span class="comment">// 不区分大小写</span></span><br><span class="line"><span class="keyword">echo</span> $str2; <span class="comment">// mdZ hello</span></span><br><span class="line"><span class="keyword">echo</span> $str3; <span class="comment">// md hello hello</span></span><br><span class="line"><span class="keyword">echo</span> $str; <span class="comment">// mdZz</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$html = htmlSpecialChars($str); <span class="comment">// 转换html中的标签</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除收尾空格,不会改变原来的字符串</span></span><br><span class="line">$str2 = lTrim($str);</span><br><span class="line">$str3 = rTrim($str);</span><br><span class="line">$str4 = trim($str);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取当前字符在字符串中第一次出现的位置,类似js中的indexof</span></span><br><span class="line">$pos = strPos(<span class="string">'javascript'</span>,<span class="string">'t'</span>); <span class="comment">// 区分大小写</span></span><br><span class="line">$posIgnore = striPos(<span class="string">'javascript'</span>,<span class="string">'T'</span>); <span class="comment">// 不区分大小写</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 字符串截取</span></span><br><span class="line"><span class="comment">// @ param $end：可选参数，缺省为到字符串末尾</span></span><br><span class="line">$subStr = subStr($str,$start,$end);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 字符串反转</span></span><br><span class="line">$str2 = strRev(<span class="string">'javascript'</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 字符串md5</span></span><br><span class="line">$str_md5 = md5($str);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 字符串打乱</span></span><br><span class="line">$str_shuffle = str_shuffle(<span class="string">'abcdef'</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 字符串分割</span></span><br><span class="line"><span class="comment">// @ param1: 分隔符</span></span><br><span class="line"><span class="comment">// @ param2: 被分割的字符串</span></span><br><span class="line"><span class="comment">// @ ret: []</span></span><br><span class="line">$str_arr = explode(<span class="string">' '</span>,$str);</span><br><span class="line"><span class="comment">// 数组的拼接</span></span><br><span class="line">$str = implode(<span class="string">''</span>,$str_arr);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="局部静态变量"><a href="#局部静态变量" class="headerlink" title="局部静态变量"></a>局部静态变量</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">static</span> $var = <span class="number">0</span>;</span><br><span class="line">	$var++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>用js代码表示</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> foo = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">let</span> _var = <span class="number">0</span></span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		_var++</span><br><span class="line">	&#125;</span><br><span class="line">&#125;())</span><br></pre></td></tr></table></figure>
+
+<h4 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$a = <span class="number">1</span>;</span><br><span class="line">$b = <span class="number">2</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">global_var</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">global</span> $a,$b; <span class="comment">// 函数内部使用全局变量需要先声明</span></span><br><span class="line">	$a = <span class="number">3</span>; <span class="comment">// 函数内部可以改变全局变量的值</span></span><br><span class="line">&#125;</span><br><span class="line">global_var();</span><br><span class="line"><span class="keyword">echo</span> $a; <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<p>引用传递,可以理解为变量的浅拷贝（地址引用）</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$a = <span class="number">1</span>;</span><br><span class="line">functon foo(&amp;$a)&#123;</span><br><span class="line">	$a = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line">foo($a);</span><br><span class="line"><span class="keyword">echo</span> $a; <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$obj = <span class="keyword">new</span> StdClass()</span><br><span class="line">$obj-&gt;a = <span class="number">3</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun</span><span class="params">($o)</span></span>&#123;</span><br><span class="line"> $o-&gt;b = <span class="number">4</span>;</span><br><span class="line">&#125;</span><br><span class="line">fun($obj);</span><br><span class="line">print_r($obj); <span class="comment">// a=3,b=4</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="函数参数可以设置默认值"><a href="#函数参数可以设置默认值" class="headerlink" title="函数参数可以设置默认值"></a>函数参数可以设置默认值</h4><blockquote>
+<p>设置默认值的变量必须放到最后</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">($a=<span class="number">3</span>,$b=<span class="number">4</span>)</span></span>&#123;</span><br><span class="line"> <span class="keyword">echo</span> $a,$b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="可变参数"><a href="#可变参数" class="headerlink" title="可变参数"></a>可变参数</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span>&#123;</span><br><span class="line">  print_r(func_get_args()); <span class="comment">// [1,2,3]</span></span><br><span class="line">  <span class="keyword">echo</span> func_num_args; <span class="comment">// 参数数量</span></span><br><span class="line">&#125;</span><br><span class="line">foo(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>用js代码表示</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">let</span> args = <span class="built_in">arguments</span></span><br><span class="line">	<span class="built_in">console</span>.log(args,args.length)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="参数类型"><a href="#参数类型" class="headerlink" title="参数类型"></a>参数类型</h4><blockquote>
+<p>可选参数： array、stdClass、callable（回调函数）<br>在指定了参数类型后，如果参数类型不匹配程序会报错</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">(array $arr)</span></span>&#123;</span><br><span class="line">	print_r($arr);</span><br><span class="line">&#125;</span><br><span class="line">foo([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+
+<h4 id="函数嵌套"><a href="#函数嵌套" class="headerlink" title="函数嵌套"></a>函数嵌套</h4><blockquote>
+<p>php中所有函数都是全局作用域<br>如果要在全局调用函数内部嵌套的函数，需要先执行外部的函数</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">bar</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">'MDZZ,傻逼才会这么用函数'</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">foo();</span><br><span class="line">bar();</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>嵌套函数如果想使用局部变量，需要使用匿名函数use传值的方式</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span>&#123;</span><br><span class="line">  $var = <span class="number">1</span>;</span><br><span class="line">  $bar = <span class="function"><span class="keyword">function</span><span class="params">()</span> <span class="title">use</span><span class="params">($var)</span></span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> $var;  <span class="comment">// 1</span></span><br><span class="line">  &#125;;</span><br><span class="line">  $bar();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">foo();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span>&#123;</span><br><span class="line">  $var = <span class="string">'局部变量'</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">($out)</span> <span class="title">use</span><span class="params">($var)</span></span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> $out; <span class="comment">// 外部传入的参数 </span></span><br><span class="line">    <span class="keyword">echo</span> $var; <span class="comment">// 局部变量</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">$res_fn = foo();</span><br><span class="line">$res_fn(<span class="string">'外部传入的参数'</span>);</span><br></pre></td></tr></table></figure>
+
+        <hr />
+        <!-- Pager -->
+        <ul class="pager">
+          
+          <li class="previous">
+            <a
+              href="/2019/04/01/redis-primary/"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Redis-CRUD"
+              >&larr; Previous Post</a
+            >
+          </li>
+           
+          <li class="next">
+            <a
+              href="/2019/03/31/php-datatype/"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="基础-数据类型"
+              >Next Post &rarr;</a
+            >
+          </li>
+          
+        </ul>
+
+        <!-- 来必力City版安装代码 -->
+        
+        <div
+          id="lv-container"
+          data-id="city"
+          data-uid="MTAyMC80NTc4Mi8yMjI5Mw=="
+        >
+          <script type="text/javascript">
+            (function(d, s) {
+              var j,
+                e = d.getElementsByTagName(s)[0];
+
+              if (typeof LivereTower === "function") {
+                return;
+              }
+
+              j = d.createElement(s);
+              j.src = "https://cdn-city.livere.com/js/embed.dist.js";
+              j.async = true;
+
+              e.parentNode.insertBefore(j, e);
+            })(document, "script");
+          </script>
+          <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        
+        <!-- City版安装代码已完成 -->
+      </div>
+
+      <!-- Tabe of Content -->
+      <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#设置文件头信息"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">设置文件头信息</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#日期、时间函数"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">日期、时间函数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#数学函数"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">数学函数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#字符串相关的函数"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">字符串相关的函数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#局部静态变量"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">局部静态变量</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#全局变量"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">全局变量</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#函数参数可以设置默认值"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">函数参数可以设置默认值</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#可变参数"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">可变参数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#参数类型"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">参数类型</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#函数嵌套"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">函数嵌套</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+    </div>
+  </div>
+</article>
+
+  
+<!-- async load function -->
+<script>
+  function async(u, c) {
+    var d = document,
+      t = "script",
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) {
+      o.addEventListener(
+        "load",
+        function(e) {
+          c(null, e);
+        },
+        false
+      );
+    }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+  async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js", function() {
+    anchors.options = {
+      visible: "hover",
+      placement: "left",
+      icon: "ℬ"
+    };
+    anchors
+      .add()
+      .remove(".intro-header h1")
+      .remove(".subheading")
+      .remove(".sidebar-container h5");
+  });
+</script>
+<style>
+  /* place left on bigger screen */
+  @media all and (min-width: 800px) {
+    .anchorjs-link {
+      position: absolute;
+      left: -0.75em;
+      font-size: 1.1em;
+      margin-top: -0.1em;
+    }
+  }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer style="padding-top:20px;padding-bottom:30px;text-align: center;font-size:14px;color:#666;">
+    Copyright &copy; MF 2020
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if ($('#tag_cloud').length !== 0) {
+        async("https://capisy.github.io/js/jquery.tagcloud.js", function () {
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: { start: '#bbbbee', end: '#0085a1' },
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+    <a id="rocket" href="#top" class=""></a>
+    <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+    <!-- Image to hack wechat -->
+    <!-- <img src="https://capisy.github.io/img/icon_wechat.png" width="0" height="0" /> -->
+    <!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

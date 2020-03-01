@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="screen-orientation" content="portrait">
+  <meta name="full-screen" content="yes">
+  <meta name="browsermode" content="application">
+  <meta name="x5-orientation" content="portrait">
+  <meta name="x5-fullscreen" content="true">
+  <meta name="x5-page-mode" content="app">
+  <meta name="description" content="capisy.cn，web前端，全栈，koa，eggjs，vue，react，https://capisy.cn">
+  <meta name="keyword" content="web前端，全栈，koa，eggjs，vue，react">
+  <link rel="shortcut icon" href="/favicon.png">
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <title>
+     面向对象-封装 - 晓の博客-capisy.cn 
+  </title>
+
+  <link rel="canonical" href="https://capisy.github.io/2019/08/07/php-oop-5/">
+
+  <!-- Bootstrap Core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/beantech.min.css">
+
+  <!-- Pygments Highlight CSS -->
+  <link rel="stylesheet" href="/css/highlight.css"> <link rel="stylesheet" href="/css/widget.css"> <link rel="stylesheet" href="/css/rocket.css">
+  <link rel="stylesheet" href="/css/signature.css"> <link rel="stylesheet" href="/css/toc.css">
+
+  <!-- Custom Fonts -->
+  <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+  <!-- Hux change font-awesome CDN to qiniu -->
+  <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- ga & ba script hoook -->
+  <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+
+<body ontouchstart="">
+    <!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+	header.intro-header {
+		background-image: url('/images/home-bg.jpg')
+	}
+</style>
+
+<header class="intro-header">
+	<!-- Signature -->
+	<div id="signature">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+					
+					<div class="post-heading">
+						<div class="tags">
+							
+							<a class="tag" href="/tags/#php" title="php">php</a>
+							
+						</div>
+						<h1>面向对象-封装</h1>
+						<h2 class="subheading"></h2>
+						<span class="meta">
+							Posted by MF on
+							2019-08-07
+						</span>
+					</div>
+					
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Capisy</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+  <div class="container">
+    <div class="row">
+      <!-- Post Container -->
+      <div
+        class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container"
+      >
+        <h4 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h4><h5 id="php提供三种访问控制符来控制方法和属性的访问权限"><a href="#php提供三种访问控制符来控制方法和属性的访问权限" class="headerlink" title="php提供三种访问控制符来控制方法和属性的访问权限"></a>php提供三种访问控制符来控制方法和属性的访问权限</h5><table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="left">public</th>
+<th align="left">protected</th>
+<th align="left">private</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">类内部</td>
+<td align="left">true</td>
+<td align="left">true</td>
+<td align="left">true</td>
+</tr>
+<tr>
+<td align="center">继承类</td>
+<td align="left">true</td>
+<td align="left">true</td>
+<td align="left">false</td>
+</tr>
+<tr>
+<td align="center">类外部</td>
+<td align="left">true</td>
+<td align="left">false</td>
+<td align="left">false</td>
+</tr>
+</tbody></table>
+<h5 id="访问和修改受保护和私有属性的方法"><a href="#访问和修改受保护和私有属性的方法" class="headerlink" title="访问和修改受保护和私有属性的方法"></a>访问和修改受保护和私有属性的方法</h5><h6 id="使用魔术方法"><a href="#使用魔术方法" class="headerlink" title="使用魔术方法"></a>使用魔术方法</h6><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</span><br><span class="line">	<span class="keyword">protected</span> $age;</span><br><span class="line">	<span class="keyword">private</span> $salary;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($age,$salary)</span></span>&#123;</span><br><span class="line">      <span class="keyword">$this</span>-&gt;age = $age;</span><br><span class="line">      <span class="keyword">$this</span>-&gt;salary = $salary;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">__get</span><span class="params">($prop)</span></span>&#123;</span><br><span class="line">      <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;$prop))&#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;$prop;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">__set</span><span class="params">($prop,$val)</span></span>&#123;</span><br><span class="line">      <span class="keyword">if</span>(<span class="keyword">isset</span>($prop))&#123;</span><br><span class="line">          <span class="keyword">$this</span>-&gt;$prop = $val;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$p1 = <span class="keyword">new</span> Person(<span class="number">16</span>,<span class="number">99999</span>);</span><br><span class="line"><span class="keyword">echo</span> $p1-&gt;age; <span class="comment">// 16</span></span><br><span class="line">$p1-&gt;salary = <span class="number">100000</span>;</span><br><span class="line"><span class="keyword">echo</span> $p1-&gt;salary; <span class="comment">// 100000</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="通过-getX-和-setX-方法"><a href="#通过-getX-和-setX-方法" class="headerlink" title="通过 getX 和 setX 方法"></a>通过 getX 和 setX 方法</h6><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Book</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> $amount; <span class="comment">// 销量</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($amount)</span></span>&#123;</span><br><span class="line">    <span class="keyword">$this</span>-&gt;amount = $amount;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">setAmount</span><span class="params">($num)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(is_int($num))&#123;</span><br><span class="line">      <span class="keyword">$this</span>-&gt;amount = $num;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">'请输入一个数字'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">getAmount</span><span class="params">($validate)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>($validate)&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;amount;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">'没有访问权限'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="对象运算符的链式调用"><a href="#对象运算符的链式调用" class="headerlink" title="对象运算符的链式调用"></a>对象运算符的链式调用</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> $school;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">setSchool</span><span class="params">($school)</span></span>&#123;</span><br><span class="line">    <span class="keyword">$this</span>-&gt;school = $school;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">getSchool</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;school;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">School</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> $myClass;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">setClass</span><span class="params">($class)</span></span>&#123;</span><br><span class="line">    <span class="keyword">$this</span>-&gt;myClass= $class;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">getClass</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;myClass;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span></span>&#123;</span><br><span class="line">  <span class="keyword">public</span> $className;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$myClass = <span class="keyword">new</span> MyClass;</span><br><span class="line">$myClass-&gt;className =<span class="string">'ub2010'</span>;</span><br><span class="line"></span><br><span class="line">$school = <span class="keyword">new</span> School;</span><br><span class="line">$school-&gt;setClass($myClass);</span><br><span class="line"></span><br><span class="line">$zcj = <span class="keyword">new</span> Student;</span><br><span class="line">$zcj-&gt;setSchool($school);</span><br><span class="line"></span><br><span class="line">$className = $zcj-&gt;getSchool()-&gt;getClass()-&gt;className;</span><br><span class="line"><span class="keyword">echo</span> $className; <span class="comment">// ub2010</span></span><br></pre></td></tr></table></figure>
+
+
+
+        <hr />
+        <!-- Pager -->
+        <ul class="pager">
+          
+          <li class="previous">
+            <a
+              href="/2019/08/09/php-oop-6/"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="面向对象-继承和多态"
+              >&larr; Previous Post</a
+            >
+          </li>
+           
+          <li class="next">
+            <a
+              href="/2019/08/06/php-oop-4/"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="面向对象-类的静态属性和静态方法"
+              >Next Post &rarr;</a
+            >
+          </li>
+          
+        </ul>
+
+        <!-- 来必力City版安装代码 -->
+        
+        <div
+          id="lv-container"
+          data-id="city"
+          data-uid="MTAyMC80NTc4Mi8yMjI5Mw=="
+        >
+          <script type="text/javascript">
+            (function(d, s) {
+              var j,
+                e = d.getElementsByTagName(s)[0];
+
+              if (typeof LivereTower === "function") {
+                return;
+              }
+
+              j = d.createElement(s);
+              j.src = "https://cdn-city.livere.com/js/embed.dist.js";
+              j.async = true;
+
+              e.parentNode.insertBefore(j, e);
+            })(document, "script");
+          </script>
+          <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        
+        <!-- City版安装代码已完成 -->
+      </div>
+
+      <!-- Tabe of Content -->
+      <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#封装"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">封装</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#php提供三种访问控制符来控制方法和属性的访问权限"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">php提供三种访问控制符来控制方法和属性的访问权限</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#访问和修改受保护和私有属性的方法"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">访问和修改受保护和私有属性的方法</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#使用魔术方法"><span class="toc-nav-number">1.2.1.</span> <span class="toc-nav-text">使用魔术方法</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#通过-getX-和-setX-方法"><span class="toc-nav-number">1.2.2.</span> <span class="toc-nav-text">通过 getX 和 setX 方法</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#对象运算符的链式调用"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">对象运算符的链式调用</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+    </div>
+  </div>
+</article>
+
+  
+<!-- async load function -->
+<script>
+  function async(u, c) {
+    var d = document,
+      t = "script",
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) {
+      o.addEventListener(
+        "load",
+        function(e) {
+          c(null, e);
+        },
+        false
+      );
+    }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+  async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js", function() {
+    anchors.options = {
+      visible: "hover",
+      placement: "left",
+      icon: "ℬ"
+    };
+    anchors
+      .add()
+      .remove(".intro-header h1")
+      .remove(".subheading")
+      .remove(".sidebar-container h5");
+  });
+</script>
+<style>
+  /* place left on bigger screen */
+  @media all and (min-width: 800px) {
+    .anchorjs-link {
+      position: absolute;
+      left: -0.75em;
+      font-size: 1.1em;
+      margin-top: -0.1em;
+    }
+  }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer style="padding-top:20px;padding-bottom:30px;text-align: center;font-size:14px;color:#666;">
+    Copyright &copy; MF 2020
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if ($('#tag_cloud').length !== 0) {
+        async("https://capisy.github.io/js/jquery.tagcloud.js", function () {
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: { start: '#bbbbee', end: '#0085a1' },
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+    <a id="rocket" href="#top" class=""></a>
+    <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+    <!-- Image to hack wechat -->
+    <!-- <img src="https://capisy.github.io/img/icon_wechat.png" width="0" height="0" /> -->
+    <!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

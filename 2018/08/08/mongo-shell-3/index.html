@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="screen-orientation" content="portrait">
+  <meta name="full-screen" content="yes">
+  <meta name="browsermode" content="application">
+  <meta name="x5-orientation" content="portrait">
+  <meta name="x5-fullscreen" content="true">
+  <meta name="x5-page-mode" content="app">
+  <meta name="description" content="capisy.cn，web前端，全栈，koa，eggjs，vue，react，https://capisy.cn">
+  <meta name="keyword" content="web前端，全栈，koa，eggjs，vue，react">
+  <link rel="shortcut icon" href="/favicon.png">
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <title>
+     mongo shell 聚合管道 - 晓の博客-capisy.cn 
+  </title>
+
+  <link rel="canonical" href="https://capisy.github.io/2018/08/08/mongo-shell-3/">
+
+  <!-- Bootstrap Core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/beantech.min.css">
+
+  <!-- Pygments Highlight CSS -->
+  <link rel="stylesheet" href="/css/highlight.css"> <link rel="stylesheet" href="/css/widget.css"> <link rel="stylesheet" href="/css/rocket.css">
+  <link rel="stylesheet" href="/css/signature.css"> <link rel="stylesheet" href="/css/toc.css">
+
+  <!-- Custom Fonts -->
+  <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+  <!-- Hux change font-awesome CDN to qiniu -->
+  <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- ga & ba script hoook -->
+  <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+
+<body ontouchstart="">
+    <!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+	header.intro-header {
+		background-image: url('/images/home-bg.jpg')
+	}
+</style>
+
+<header class="intro-header">
+	<!-- Signature -->
+	<div id="signature">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+					
+					<div class="post-heading">
+						<div class="tags">
+							
+							<a class="tag" href="/tags/#mongodb" title="mongodb">mongodb</a>
+							
+						</div>
+						<h1>mongo shell 聚合管道</h1>
+						<h2 class="subheading"></h2>
+						<span class="meta">
+							Posted by MF on
+							2018-08-08
+						</span>
+					</div>
+					
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Capisy</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+  <div class="container">
+    <div class="row">
+      <!-- Post Container -->
+      <div
+        class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container"
+      >
+        <figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.insert</span>(&#123;<span class="attribute">name</span>:<span class="string">'sy'</span>,<span class="attribute">age</span>:<span class="number">16</span>,<span class="attribute">addr</span>:&#123;<span class="attribute">country</span>:<span class="string">'Japan'</span>,<span class="attribute">city</span>:<span class="string">'Tokyo'</span>&#125;&#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="project-对查找到的结果重新映射（类似于mysql的视图）"><a href="#project-对查找到的结果重新映射（类似于mysql的视图）" class="headerlink" title="$project:对查找到的结果重新映射（类似于mysql的视图）"></a>$project:对查找到的结果重新映射（类似于mysql的视图）</h4><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.aggregate</span>([</span><br><span class="line">	&#123;$<span class="attribute">project</span>:&#123;<span class="attribute">_id</span>:<span class="number">0</span>,<span class="attribute">username</span>:<span class="string">"$name"</span>&#125;&#125;</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.aggregate</span>([</span><br><span class="line">	&#123;$<span class="attribute">project</span>:&#123;<span class="attribute">_id</span>:<span class="number">0</span>,<span class="attribute">name</span>:<span class="number">1</span>,<span class="attribute">city</span>:<span class="string">"$addr.city"</span>&#125;&#125;</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<h4 id="match：匹配"><a href="#match：匹配" class="headerlink" title="$match：匹配"></a>$match：匹配</h4><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.aggregate</span>([</span><br><span class="line">	&#123;$<span class="attribute">match</span>:&#123;<span class="string">"addr.city"</span>:<span class="string">"Tokyo"</span>&#125;&#125;,</span><br><span class="line">	&#123;$<span class="attribute">project</span>:&#123;<span class="attribute">_id</span>:<span class="number">0</span>&#125;&#125;</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">db.user.aggregate([</span><br><span class="line">	&#123;<span class="symbol">$</span>match:&#123;</span><br><span class="line">		<span class="symbol">$</span><span class="keyword">or</span>:[</span><br><span class="line">			&#123;<span class="string">"addr.city"</span>:<span class="string">'Tokyo'</span>&#125;,</span><br><span class="line">			&#123; age:&#123;<span class="symbol">$</span><span class="keyword">lt</span>:<span class="number">24</span>&#125; &#125;</span><br><span class="line">		]</span><br><span class="line">	&#125;&#125;</span><br><span class="line">]) <span class="comment">// 地址是东京或者年龄小于24</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="limit-和-skip"><a href="#limit-和-skip" class="headerlink" title="$limit 和 $skip"></a>$limit 和 $skip</h4><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">db.<span class="keyword">user</span>.<span class="keyword">aggregate</span>([</span><br><span class="line">	&#123;$<span class="keyword">limit</span>:<span class="number">1</span>&#125;</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">db.<span class="literal">user</span>.aggregate([</span><br><span class="line">	&#123;<span class="variable">$skip</span>: <span class="number">2</span>&#125;</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<h4 id="unwind：数组字段展开"><a href="#unwind：数组字段展开" class="headerlink" title="$unwind：数组字段展开"></a>$unwind：数组字段展开</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.insert</span>(&#123;<span class="attribute">name</span>:<span class="string">'ycy'</span>,addr:[<span class="string">'JS'</span>,<span class="string">'SZ'</span>]&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.aggregate</span>([</span><br><span class="line">	&#123;$<span class="attribute">unwind</span>:&#123;</span><br><span class="line">		<span class="attribute">path</span>:<span class="string">"$addr"</span></span><br><span class="line">	&#125;&#125;,</span><br><span class="line">	&#123;$<span class="attribute">project</span>:&#123;<span class="attribute">_id</span>:<span class="number">0</span>&#125;&#125;</span><br><span class="line">]) <span class="comment">// 把数组字段按值分离成多条数据</span></span><br><span class="line"><span class="comment">// &#123;name:'ycy',adddr:'JS'&#125;</span></span><br><span class="line"><span class="comment">// &#123;name:'ycy',adddr:'SZ'&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.aggregate</span>([</span><br><span class="line">	&#123;$<span class="attribute">unwind</span>:&#123;</span><br><span class="line">		<span class="attribute">path</span>:<span class="string">"$addr"</span>,</span><br><span class="line">		<span class="attribute">includeArrayIndex</span>:<span class="string">'cityIdx'</span> <span class="comment">// 新生成的字段在原数组中的索引</span></span><br><span class="line">	&#125;&#125;,</span><br><span class="line">	&#123;$<span class="attribute">project</span>:&#123;<span class="attribute">_id</span>:<span class="number">0</span>&#125;&#125;</span><br><span class="line">])</span><br><span class="line"><span class="comment">// &#123;name:'ycy',adddr:'JS',cityIdx:NumberLong(0)&#125;</span></span><br><span class="line"><span class="comment">// &#123;name:'ycy',adddr:'SZ',cityIdx:NumberLong(1)&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="sort：排序"><a href="#sort：排序" class="headerlink" title="$sort：排序"></a>$sort：排序</h4><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.aggregate</span>([</span><br><span class="line">	&#123;$<span class="attribute">sort</span>:&#123;<span class="attribute">age</span>:<span class="number">1</span>, name：-<span class="number">1</span>&#125;&#125;</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<h4 id="lookup-类似于连表查询"><a href="#lookup-类似于连表查询" class="headerlink" title="$lookup: 类似于连表查询"></a>$lookup: 类似于连表查询</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">db.user.inert([</span><br><span class="line">	&#123;<span class="string">name:</span><span class="string">'ycy'</span>,<span class="string">cid:</span><span class="number">0</span>&#125;</span><br><span class="line">	&#123;<span class="string">name:</span><span class="string">'sy'</span>,<span class="string">cid:</span><span class="number">1</span>&#125;</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">db.country.insert([</span><br><span class="line">	&#123;<span class="string">cname:</span><span class="string">'China'</span>,<span class="string">cid:</span><span class="number">0</span>&#125;,</span><br><span class="line">	&#123;<span class="string">cname:</span><span class="string">'Japan'</span>,<span class="string">cid:</span><span class="number">1</span>&#125;</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">db.user.aggregate([</span><br><span class="line">	<span class="variable">$lookup</span>:&#123;</span><br><span class="line">		from:<span class="string">'country'</span>,</span><br><span class="line">		localField:<span class="string">'cid'</span>, <span class="regexp">//</span> user-&gt;cid</span><br><span class="line">		foreignField:<span class="string">'cid'</span>, <span class="regexp">//</span> country-&gt;cid</span><br><span class="line">		as:<span class="string">'country_info'</span></span><br><span class="line">	&#125;</span><br><span class="line">])</span><br><span class="line"><span class="regexp">//</span> &#123;name:<span class="string">'ycy'</span>, cid:<span class="number">0</span>, country_info:&#123;cname:<span class="string">'China'</span>, cid:<span class="number">0</span> &#125; &#125;</span><br><span class="line"><span class="regexp">//</span> &#123;name:<span class="string">'sy'</span>, cid:<span class="number">1</span>, country_info:&#123;cname:<span class="string">'Japan'</span>, cid:<span class="number">1</span> &#125; &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="group-分组"><a href="#group-分组" class="headerlink" title="$group:分组"></a>$group:分组</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">db.goods.insert([</span><br><span class="line">	&#123;<span class="string">gtyp:</span><span class="string">'pc'</span>,<span class="string">price:</span><span class="number">5555</span>,<span class="string">amount:</span><span class="number">10</span>&#125;,</span><br><span class="line">	&#123;<span class="string">gtyp:</span><span class="string">'pc'</span>,<span class="string">price:</span><span class="number">12555</span>,<span class="string">amount:</span><span class="number">8</span>&#125;,</span><br><span class="line">	&#123;<span class="string">gtyp:</span><span class="string">'phone'</span>,<span class="string">price:</span><span class="number">3555</span>,<span class="string">amount:</span><span class="number">12</span>&#125;,</span><br><span class="line">	&#123;<span class="string">gtyp:</span><span class="string">'phone'</span>,<span class="string">price:</span><span class="number">2999</span>,<span class="string">amount:</span><span class="number">11</span>&#125;,</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">db.goods.aggregate([</span><br><span class="line">	&#123; <span class="variable">$group</span>:&#123; _id:<span class="string">'$gtyp'</span> &#125; &#125;</span><br><span class="line">])  <span class="regexp">//</span> [ &#123;<span class="string">'_id'</span>:<span class="string">'phone'</span>&#125;,&#123;<span class="string">'_id'</span>:<span class="string">'pc'</span>&#125; ]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">db.goods.aggregate([</span><br><span class="line">	&#123;<span class="variable">$group</span>:&#123;</span><br><span class="line">		_id:<span class="string">'<span class="variable">$gtyp</span>'</span>,</span><br><span class="line">		amounts:&#123; <span class="variable">$sum</span>:<span class="string">'<span class="variable">$amount</span>'</span>&#125;,</span><br><span class="line">		totalPrice:&#123; <span class="variable">$sum</span>:&#123; <span class="variable">$multiply</span>:[<span class="string">'<span class="variable">$price</span>'</span>,<span class="string">'<span class="variable">$amount</span>'</span>] &#125; &#125;,</span><br><span class="line">		avgPrice:&#123; <span class="variable">$avg</span>:<span class="string">'<span class="variable">$price</span>'</span> &#125;,</span><br><span class="line">		count: &#123; <span class="variable">$sum</span>:<span class="number">1</span>&#125;, // 分组中的数据条数</span><br><span class="line">		maxPrice: &#123; <span class="variable">$max</span>:<span class="string">'<span class="variable">$price</span>'</span>&#125;,</span><br><span class="line">		minTotalPrice:&#123; <span class="variable">$min</span>:&#123;<span class="variable">$multiply</span>:[<span class="string">'<span class="variable">$price</span>'</span>,<span class="string">'<span class="variable">$amount</span>'</span>]&#125; &#125;</span><br><span class="line">	&#125;&#125;</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">db.goods.aggregate([</span><br><span class="line">	&#123;<span class="symbol">$group</span>:&#123;</span><br><span class="line">		_id:<span class="literal">null</span>,</span><br><span class="line">		amounts:&#123; <span class="symbol">$sum</span>:<span class="string">'$amount'</span>&#125;,</span><br><span class="line">	&#125;&#125;</span><br><span class="line">]) <span class="comment">// 不分组，但可以使用计算功能</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="out-把聚合管道的输出结果写入新的collection"><a href="#out-把聚合管道的输出结果写入新的collection" class="headerlink" title="$out: 把聚合管道的输出结果写入新的collection"></a>$out: 把聚合管道的输出结果写入新的collection</h4><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.goods</span><span class="selector-class">.aggregate</span>([</span><br><span class="line">	&#123; $<span class="attribute">group</span>:&#123; <span class="attribute">_id</span>:<span class="string">'$gtyp'</span> &#125; &#125;,</span><br><span class="line">	&#123; $<span class="attribute">out</span>:<span class="string">'output'</span> &#125;</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.output</span><span class="selector-class">.find</span>()</span><br></pre></td></tr></table></figure>
+
+<h4 id="allowDiskuse-在数据量超过100M时，使用磁盘存储"><a href="#allowDiskuse-在数据量超过100M时，使用磁盘存储" class="headerlink" title="allowDiskuse, 在数据量超过100M时，使用磁盘存储"></a>allowDiskuse, 在数据量超过100M时，使用磁盘存储</h4><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">db.goods.<span class="keyword">aggregate</span>([</span><br><span class="line"></span><br><span class="line">],&#123;</span><br><span class="line">	allowDiskUse:<span class="keyword">true</span> // 默认为<span class="keyword">false</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+        <hr />
+        <!-- Pager -->
+        <ul class="pager">
+          
+          <li class="previous">
+            <a
+              href="/2018/08/09/mongo-shell-4/"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="mongo shell 索引"
+              >&larr; Previous Post</a
+            >
+          </li>
+           
+          <li class="next">
+            <a
+              href="/2018/08/07/mongo-shell-2/"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="mongo shell 更新操作"
+              >Next Post &rarr;</a
+            >
+          </li>
+          
+        </ul>
+
+        <!-- 来必力City版安装代码 -->
+        
+        <div
+          id="lv-container"
+          data-id="city"
+          data-uid="MTAyMC80NTc4Mi8yMjI5Mw=="
+        >
+          <script type="text/javascript">
+            (function(d, s) {
+              var j,
+                e = d.getElementsByTagName(s)[0];
+
+              if (typeof LivereTower === "function") {
+                return;
+              }
+
+              j = d.createElement(s);
+              j.src = "https://cdn-city.livere.com/js/embed.dist.js";
+              j.async = true;
+
+              e.parentNode.insertBefore(j, e);
+            })(document, "script");
+          </script>
+          <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        
+        <!-- City版安装代码已完成 -->
+      </div>
+
+      <!-- Tabe of Content -->
+      <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#project-对查找到的结果重新映射（类似于mysql的视图）"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">$project:对查找到的结果重新映射（类似于mysql的视图）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#match：匹配"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">$match：匹配</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#limit-和-skip"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">$limit 和 $skip</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#unwind：数组字段展开"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">$unwind：数组字段展开</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sort：排序"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">$sort：排序</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#lookup-类似于连表查询"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">$lookup: 类似于连表查询</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#group-分组"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">$group:分组</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#out-把聚合管道的输出结果写入新的collection"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">$out: 把聚合管道的输出结果写入新的collection</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#allowDiskuse-在数据量超过100M时，使用磁盘存储"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">allowDiskuse, 在数据量超过100M时，使用磁盘存储</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+    </div>
+  </div>
+</article>
+
+  
+<!-- async load function -->
+<script>
+  function async(u, c) {
+    var d = document,
+      t = "script",
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) {
+      o.addEventListener(
+        "load",
+        function(e) {
+          c(null, e);
+        },
+        false
+      );
+    }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+  async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js", function() {
+    anchors.options = {
+      visible: "hover",
+      placement: "left",
+      icon: "ℬ"
+    };
+    anchors
+      .add()
+      .remove(".intro-header h1")
+      .remove(".subheading")
+      .remove(".sidebar-container h5");
+  });
+</script>
+<style>
+  /* place left on bigger screen */
+  @media all and (min-width: 800px) {
+    .anchorjs-link {
+      position: absolute;
+      left: -0.75em;
+      font-size: 1.1em;
+      margin-top: -0.1em;
+    }
+  }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer style="padding-top:20px;padding-bottom:30px;text-align: center;font-size:14px;color:#666;">
+    Copyright &copy; MF 2020
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if ($('#tag_cloud').length !== 0) {
+        async("https://capisy.github.io/js/jquery.tagcloud.js", function () {
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: { start: '#bbbbee', end: '#0085a1' },
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+    <a id="rocket" href="#top" class=""></a>
+    <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+    <!-- Image to hack wechat -->
+    <!-- <img src="https://capisy.github.io/img/icon_wechat.png" width="0" height="0" /> -->
+    <!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

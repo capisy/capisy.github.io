@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="screen-orientation" content="portrait">
+  <meta name="full-screen" content="yes">
+  <meta name="browsermode" content="application">
+  <meta name="x5-orientation" content="portrait">
+  <meta name="x5-fullscreen" content="true">
+  <meta name="x5-page-mode" content="app">
+  <meta name="description" content="capisy.cn，web前端，全栈，koa，eggjs，vue，react，https://capisy.cn">
+  <meta name="keyword" content="web前端，全栈，koa，eggjs，vue，react">
+  <link rel="shortcut icon" href="/favicon.png">
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <title>
+     mongo shell 增加、删除、查询操作 - 晓の博客-capisy.cn 
+  </title>
+
+  <link rel="canonical" href="https://capisy.github.io/2018/08/06/mongo-shell-1/">
+
+  <!-- Bootstrap Core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/beantech.min.css">
+
+  <!-- Pygments Highlight CSS -->
+  <link rel="stylesheet" href="/css/highlight.css"> <link rel="stylesheet" href="/css/widget.css"> <link rel="stylesheet" href="/css/rocket.css">
+  <link rel="stylesheet" href="/css/signature.css"> <link rel="stylesheet" href="/css/toc.css">
+
+  <!-- Custom Fonts -->
+  <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+  <!-- Hux change font-awesome CDN to qiniu -->
+  <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- ga & ba script hoook -->
+  <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+
+<body ontouchstart="">
+    <!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+	header.intro-header {
+		background-image: url('/images/home-bg.jpg')
+	}
+</style>
+
+<header class="intro-header">
+	<!-- Signature -->
+	<div id="signature">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+					
+					<div class="post-heading">
+						<div class="tags">
+							
+							<a class="tag" href="/tags/#mongodb" title="mongodb">mongodb</a>
+							
+						</div>
+						<h1>mongo shell 增加、删除、查询操作</h1>
+						<h2 class="subheading"></h2>
+						<span class="meta">
+							Posted by MF on
+							2018-08-06
+						</span>
+					</div>
+					
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Capisy</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+  <div class="container">
+    <div class="row">
+      <!-- Post Container -->
+      <div
+        class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container"
+      >
+        <h4 id="开启mongo-shell"><a href="#开启mongo-shell" class="headerlink" title="开启mongo shell"></a>开启mongo shell</h4><ul>
+<li>配置path</li>
+<li>cmd -&gt; mongo</li>
+</ul>
+<h4 id="mongo-shell-操作"><a href="#mongo-shell-操作" class="headerlink" title="mongo shell 操作"></a>mongo shell 操作</h4><h5 id="新建数据库"><a href="#新建数据库" class="headerlink" title="新建数据库"></a>新建数据库</h5><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> mf_egg</span><br></pre></td></tr></table></figure>
+
+<h5 id="显示数据库列表"><a href="#显示数据库列表" class="headerlink" title="显示数据库列表"></a>显示数据库列表</h5><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> dbs <span class="comment">// 这里没有显示mf_egg,因为新建的数据库是空的</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="添加一条数据"><a href="#添加一条数据" class="headerlink" title="添加一条数据"></a>添加一条数据</h5><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.<span class="keyword">user</span>.insertOne(&#123;<span class="type">name</span>:<span class="string">'shiyuan'</span>&#125;) // 新建一个名为<span class="keyword">user</span>的集合，并插入一条数据</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> dbs <span class="comment">// 显示mf_egg 数据库</span></span><br><span class="line"><span class="keyword">show</span> collections <span class="comment">// user</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="删除一条数据"><a href="#删除一条数据" class="headerlink" title="删除一条数据"></a>删除一条数据</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.remove</span>(&#123;<span class="attribute">name</span>:<span class="string">'shiyuan'</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<h5 id="删除一个集合"><a href="#删除一个集合" class="headerlink" title="删除一个集合"></a>删除一个集合</h5><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">db</span>.user.<span class="keyword">drop</span>() <span class="comment">// 如果一个数据库中没有集合存在，数据库会被自动删除</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="删除文档"><a href="#删除文档" class="headerlink" title="删除文档"></a>删除文档</h5><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.remove</span>(&#123;&#125;); <span class="comment">// 删除所有文档，但会保留集合</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.user.<span class="keyword">remove</span>(&#123;name:<span class="string">'sy'</span>&#125;); <span class="comment">// 删除所有符合筛选条件的文档</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.user.remove(&#123;<span class="string">name:</span><span class="string">'sy'</span>&#125;,&#123;<span class="string">justOne:</span><span class="literal">true</span>&#125;) <span class="comment">// 删除符合条件的最先匹配的一篇文档</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="一次添加多条数据"><a href="#一次添加多条数据" class="headerlink" title="一次添加多条数据"></a>一次添加多条数据</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.insertMany</span>(<span class="selector-attr">[&#123;name:<span class="string">'十元'</span>&#125;，&#123;name:<span class="string">'sy'</span>&#125;]</span>)</span><br></pre></td></tr></table></figure>
+
+<h5 id="使用insert插入数据（insert-insertOne-insertMany）"><a href="#使用insert插入数据（insert-insertOne-insertMany）" class="headerlink" title="使用insert插入数据（insert = insertOne + insertMany）"></a>使用insert插入数据（insert = insertOne + insertMany）</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.insert</span>(&#123;<span class="attribute">name</span>:<span class="string">'石原里美'</span>,contact:[<span class="string">'Japan'</span>,<span class="string">'Tokyo'</span>]&#125;)</span><br></pre></td></tr></table></figure>
+
+<h5 id="查询单条数据"><a href="#查询单条数据" class="headerlink" title="查询单条数据"></a>查询单条数据</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.findOne</span>(&#123;<span class="attribute">name</span>:<span class="string">'石原里美'</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<h6 id="使用-all修饰符查询"><a href="#使用-all修饰符查询" class="headerlink" title="使用$all修饰符查询"></a>使用$all修饰符查询</h6><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.findOne</span>(&#123;<span class="attribute">contact</span>:&#123;$all:[<span class="string">'Japan'</span>,<span class="string">'Tokyo'</span>]&#125;&#125;)</span><br></pre></td></tr></table></figure>
+
+<h6 id="使用-gt-大于-，-lt-小于-修饰符查询"><a href="#使用-gt-大于-，-lt-小于-修饰符查询" class="headerlink" title="使用$gt(大于)，$lt(小于)修饰符查询"></a>使用$gt(大于)，$lt(小于)修饰符查询</h6><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">db.user.insert<span class="constructor">One(&#123;<span class="params">name</span>:'<span class="params">sy</span>',<span class="params">age</span>:16&#125;)</span></span><br><span class="line">db.user.find<span class="constructor">One(&#123;<span class="params">age</span>:&#123;$<span class="params">gt</span>:10,$<span class="params">lt</span>:20&#125;&#125;)</span> <span class="comment">// 查询年龄在10-20岁之内的数据</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="使用-elemMatch修饰符查询"><a href="#使用-elemMatch修饰符查询" class="headerlink" title="使用$elemMatch修饰符查询"></a>使用$elemMatch修饰符查询</h6><blockquote>
+<p>$elemMatch的匹配条件必须是一个Object</p>
+<p>文档中只要有一个元素满足查询条件即可</p>
+</blockquote>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">db.user.insert<span class="constructor">One(&#123;<span class="params">name</span>:'<span class="params">sy</span>',<span class="params">tel</span>:[1550000]&#125;)</span></span><br><span class="line">db.user.insert<span class="constructor">One(&#123;<span class="params">name</span>:'<span class="params">shiyuan</span>',<span class="params">tel</span>:[155，1550000]&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 查询tel&gt;1000000的数据</span></span><br><span class="line"><span class="comment">// 上面的两条数据都可以被查询到</span></span><br><span class="line">db.user.find<span class="constructor">One(&#123;<span class="params">tel</span>:&#123;$<span class="params">elemMatch</span>:&#123;$<span class="params">gt</span>:1000000&#125;&#125;&#125;)</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="all和-elemMatch-配合使用"><a href="#all和-elemMatch-配合使用" class="headerlink" title="$all和$elemMatch 配合使用"></a>$all和$elemMatch 配合使用</h6><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">db.user.insertOne(&#123;name:<span class="string">'sy'</span>,tel:[<span class="number">1550000</span>,<span class="number">5550000</span>]&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 查询电话号码同时在1000000-2000000和5000000-6000000的数据</span></span><br><span class="line">db.user.findOne(</span><br><span class="line">	&#123;</span><br><span class="line">		tel:&#123;</span><br><span class="line">			<span class="symbol">$</span><span class="keyword">all</span>:[</span><br><span class="line">				&#123; <span class="symbol">$</span>elemMatch:&#123;<span class="symbol">$</span><span class="keyword">gt</span>:<span class="number">1000000</span>,<span class="symbol">$</span><span class="keyword">lt</span>:<span class="number">2000000</span>&#125; &#125;</span><br><span class="line">				&#123; <span class="symbol">$</span>elemMatch:&#123;<span class="symbol">$</span><span class="keyword">gt</span>:<span class="number">5000000</span>,<span class="symbol">$</span><span class="keyword">lt</span>:<span class="number">6000000</span>&#125; &#125;</span><br><span class="line">			]</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h6 id="正则表达式修饰符"><a href="#正则表达式修饰符" class="headerlink" title="正则表达式修饰符"></a>正则表达式修饰符</h6><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.<span class="keyword">user</span>.find(&#123;<span class="type">name</span>:/^s/&#125;) // 查找<span class="type">name</span>以<span class="string">'s'</span>开头的数据</span><br></pre></td></tr></table></figure>
+
+<h6 id="pattern-all"><a href="#pattern-all" class="headerlink" title="$pattern + $all"></a>$pattern + $all</h6><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.user.find(&#123; name:&#123;<span class="variable">$all</span>:[<span class="regexp">/^s/</span>,<span class="regexp">/y$/</span>]&#125; &#125;) <span class="regexp">//</span> 查找name以<span class="string">'s'</span>开头且以<span class="string">'y'</span>结尾的数据</span><br></pre></td></tr></table></figure>
+
+<h6 id="pattern-in"><a href="#pattern-in" class="headerlink" title="$pattern + $in"></a>$pattern + $in</h6><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.user.find(&#123; name:&#123;<span class="variable">$in</span>:[<span class="regexp">/^s/</span>,<span class="regexp">/y$/</span>]&#125; &#125;) <span class="regexp">//</span> 查找name以<span class="string">'s'</span>开头或以<span class="string">'y'</span>结尾的数据</span><br></pre></td></tr></table></figure>
+
+<h5 id="skip-和-limit-方法"><a href="#skip-和-limit-方法" class="headerlink" title="skip 和 limit 方法"></a>skip 和 limit 方法</h5><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.find</span>(&#123;<span class="attribute">name</span>:<span class="string">'sy'</span>&#125;)<span class="selector-class">.limit</span>(<span class="number">5</span>) <span class="comment">// 从结果集中取前5条数据</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.find</span>(&#123;<span class="attribute">name</span>:<span class="string">'sy'</span>&#125;)<span class="selector-class">.skip</span>(<span class="number">2</span>) <span class="comment">// 返回结果集中前两条数据之外的数据</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.find</span>(&#123;<span class="attribute">name</span>:<span class="string">'sy'</span>&#125;)<span class="selector-class">.skip</span>(<span class="number">2</span>)<span class="selector-class">.limit</span>(<span class="number">5</span>) <span class="comment">// 从结果集的第三天数据开始，选取之后的5条数据</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="count-方法：返回结果集的length"><a href="#count-方法：返回结果集的length" class="headerlink" title="count 方法：返回结果集的length"></a>count 方法：返回结果集的length</h5><figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.user.<span class="built_in">find</span>(&#123;<span class="built_in">name</span>:<span class="string">'sy'</span>&#125;).<span class="built_in">count</span>() <span class="comment">// 假设结果集中有6条数据</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.find</span>(&#123;<span class="attribute">name</span>:<span class="string">'sy'</span>&#125;)<span class="selector-class">.limit</span>(<span class="number">1</span>)<span class="selector-class">.count</span>()  <span class="comment">// 6</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.<span class="keyword">user</span>.find(&#123;<span class="type">name</span>:<span class="string">'sy'</span>&#125;).<span class="keyword">limit</span>(<span class="number">1</span>).count(<span class="keyword">true</span>) // <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.user.<span class="built_in">find</span>(&#123;<span class="built_in">name</span>:<span class="string">'sy'</span>&#125;).skip(<span class="number">1</span>).<span class="built_in">count</span>(<span class="literal">true</span>) <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="sort-方法（排序）"><a href="#sort-方法（排序）" class="headerlink" title="sort 方法（排序）"></a>sort 方法（排序）</h5><figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.user.<span class="built_in">find</span>().<span class="built_in">sort</span>(&#123;<span class="built_in">name</span>:<span class="number">1</span>&#125;) <span class="comment">// 按照name递增排序</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.find</span>()<span class="selector-class">.sort</span>(&#123;<span class="attribute">name</span>:<span class="number">1</span>,<span class="attribute">age</span>:-<span class="number">1</span>&#125;) <span class="comment">// name递增，age递减排序</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="sort-limit：查询最xx的一条数据"><a href="#sort-limit：查询最xx的一条数据" class="headerlink" title="sort + limit：查询最xx的一条数据"></a>sort + limit：查询最xx的一条数据</h5><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.find</span>()<span class="selector-class">.sort</span>(&#123;<span class="attribute">age</span>:-<span class="number">1</span>&#125;)<span class="selector-class">.limit</span>(<span class="number">1</span>) <span class="comment">// 查询年龄最大的一条数据</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="sort-skip-limit-的执行顺序"><a href="#sort-skip-limit-的执行顺序" class="headerlink" title="sort, skip, limit 的执行顺序"></a>sort, skip, limit 的执行顺序</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.find</span>()<span class="selector-class">.sort</span>()<span class="selector-class">.skip</span>()<span class="selector-class">.limit</span>()</span><br></pre></td></tr></table></figure>
+
+<h5 id="查询指定的字段"><a href="#查询指定的字段" class="headerlink" title="查询指定的字段"></a>查询指定的字段</h5><blockquote>
+<p>除了主键文档外，不可以在投影文档中混用包含和不包含操作</p>
+</blockquote>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.find</span>(&#123;&#125;,&#123;<span class="attribute">name</span>:<span class="number">1</span>,<span class="attribute">_id</span>:<span class="number">0</span>&#125;) <span class="comment">// 只查询 name 字段</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.find</span>(&#123;&#125;,&#123;<span class="attribute">age</span>:<span class="number">0</span>&#125;) <span class="comment">// 查询除了 age 之外的所有字段</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="slice-操作符返回数组字段中的部分元素"><a href="#slice-操作符返回数组字段中的部分元素" class="headerlink" title="$slice 操作符返回数组字段中的部分元素"></a>$slice 操作符返回数组字段中的部分元素</h6><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.user.find(&#123;&#125;,&#123;contact:&#123; <span class="variable">$slice</span>:<span class="number">1</span> &#125;&#125;) <span class="regexp">//</span> <span class="variable">$slice</span>的取值为返回数组的前几项</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.user.find(&#123;&#125;,&#123;<span class="string">contact:</span>&#123; <span class="string">$slice:</span><span class="number">-1</span> &#125;&#125;) <span class="comment">// 返回数组的后几项</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.<span class="keyword">user</span>.find(&#123;&#125;,&#123;contact:&#123; <span class="variable">$slice</span>:[<span class="number">1</span>,<span class="number">2</span>] &#125;&#125;) // 类似 <span class="keyword">skip</span>(<span class="number">1</span>),<span class="keyword">limit</span>(<span class="number">2</span>) 操作</span><br></pre></td></tr></table></figure>
+
+<h6 id="elemMatch-操作符可以返回数组字段中满足筛选条件的第一个元素"><a href="#elemMatch-操作符可以返回数组字段中满足筛选条件的第一个元素" class="headerlink" title="$elemMatch 操作符可以返回数组字段中满足筛选条件的第一个元素"></a>$elemMatch 操作符可以返回数组字段中满足筛选条件的第一个元素</h6><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.user</span><span class="selector-class">.insert</span>(&#123;<span class="attribute">name</span>:<span class="string">'sy'</span>,location:[<span class="string">'Japan'</span>,<span class="string">'Tokyo'</span>,<span class="string">'xxx'</span>]&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">db.user.find(&#123;&#125;,&#123;</span><br><span class="line">	_id:<span class="number">0</span>,</span><br><span class="line"><span class="built_in">	name</span>:<span class="number">1</span>,</span><br><span class="line">	location:&#123;</span><br><span class="line">		<span class="variable">$elemMatch:</span>&#123; <span class="variable">$gt:</span><span class="string">'Japan'</span> &#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;) // <span class="built_in">&#123;name</span>:<span class="string">'sy'</span>,location:[<span class="string">'Tokyo'</span>]&#125;</span><br></pre></td></tr></table></figure>
+
+        <hr />
+        <!-- Pager -->
+        <ul class="pager">
+          
+          <li class="previous">
+            <a
+              href="/2018/08/07/mongo-shell-2/"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="mongo shell 更新操作"
+              >&larr; Previous Post</a
+            >
+          </li>
+           
+          <li class="next">
+            <a
+              href="/2018/05/05/vue-directive/"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="vue中指令的用法"
+              >Next Post &rarr;</a
+            >
+          </li>
+          
+        </ul>
+
+        <!-- 来必力City版安装代码 -->
+        
+        <div
+          id="lv-container"
+          data-id="city"
+          data-uid="MTAyMC80NTc4Mi8yMjI5Mw=="
+        >
+          <script type="text/javascript">
+            (function(d, s) {
+              var j,
+                e = d.getElementsByTagName(s)[0];
+
+              if (typeof LivereTower === "function") {
+                return;
+              }
+
+              j = d.createElement(s);
+              j.src = "https://cdn-city.livere.com/js/embed.dist.js";
+              j.async = true;
+
+              e.parentNode.insertBefore(j, e);
+            })(document, "script");
+          </script>
+          <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        
+        <!-- City版安装代码已完成 -->
+      </div>
+
+      <!-- Tabe of Content -->
+      <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#开启mongo-shell"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">开启mongo shell</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#mongo-shell-操作"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">mongo shell 操作</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#新建数据库"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">新建数据库</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#显示数据库列表"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">显示数据库列表</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#添加一条数据"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">添加一条数据</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#删除一条数据"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">删除一条数据</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#删除一个集合"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">删除一个集合</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#删除文档"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text">删除文档</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#一次添加多条数据"><span class="toc-nav-number">2.7.</span> <span class="toc-nav-text">一次添加多条数据</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#使用insert插入数据（insert-insertOne-insertMany）"><span class="toc-nav-number">2.8.</span> <span class="toc-nav-text">使用insert插入数据（insert = insertOne + insertMany）</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#查询单条数据"><span class="toc-nav-number">2.9.</span> <span class="toc-nav-text">查询单条数据</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#使用-all修饰符查询"><span class="toc-nav-number">2.9.1.</span> <span class="toc-nav-text">使用$all修饰符查询</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#使用-gt-大于-，-lt-小于-修饰符查询"><span class="toc-nav-number">2.9.2.</span> <span class="toc-nav-text">使用$gt(大于)，$lt(小于)修饰符查询</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#使用-elemMatch修饰符查询"><span class="toc-nav-number">2.9.3.</span> <span class="toc-nav-text">使用$elemMatch修饰符查询</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#all和-elemMatch-配合使用"><span class="toc-nav-number">2.9.4.</span> <span class="toc-nav-text">$all和$elemMatch 配合使用</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#正则表达式修饰符"><span class="toc-nav-number">2.9.5.</span> <span class="toc-nav-text">正则表达式修饰符</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#pattern-all"><span class="toc-nav-number">2.9.6.</span> <span class="toc-nav-text">$pattern + $all</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#pattern-in"><span class="toc-nav-number">2.9.7.</span> <span class="toc-nav-text">$pattern + $in</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#skip-和-limit-方法"><span class="toc-nav-number">2.10.</span> <span class="toc-nav-text">skip 和 limit 方法</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#count-方法：返回结果集的length"><span class="toc-nav-number">2.11.</span> <span class="toc-nav-text">count 方法：返回结果集的length</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#sort-方法（排序）"><span class="toc-nav-number">2.12.</span> <span class="toc-nav-text">sort 方法（排序）</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#sort-limit：查询最xx的一条数据"><span class="toc-nav-number">2.13.</span> <span class="toc-nav-text">sort + limit：查询最xx的一条数据</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#sort-skip-limit-的执行顺序"><span class="toc-nav-number">2.14.</span> <span class="toc-nav-text">sort, skip, limit 的执行顺序</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#查询指定的字段"><span class="toc-nav-number">2.15.</span> <span class="toc-nav-text">查询指定的字段</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#slice-操作符返回数组字段中的部分元素"><span class="toc-nav-number">2.15.1.</span> <span class="toc-nav-text">$slice 操作符返回数组字段中的部分元素</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#elemMatch-操作符可以返回数组字段中满足筛选条件的第一个元素"><span class="toc-nav-number">2.15.2.</span> <span class="toc-nav-text">$elemMatch 操作符可以返回数组字段中满足筛选条件的第一个元素</span></a></li></ol></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+    </div>
+  </div>
+</article>
+
+  
+<!-- async load function -->
+<script>
+  function async(u, c) {
+    var d = document,
+      t = "script",
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) {
+      o.addEventListener(
+        "load",
+        function(e) {
+          c(null, e);
+        },
+        false
+      );
+    }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+  async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js", function() {
+    anchors.options = {
+      visible: "hover",
+      placement: "left",
+      icon: "ℬ"
+    };
+    anchors
+      .add()
+      .remove(".intro-header h1")
+      .remove(".subheading")
+      .remove(".sidebar-container h5");
+  });
+</script>
+<style>
+  /* place left on bigger screen */
+  @media all and (min-width: 800px) {
+    .anchorjs-link {
+      position: absolute;
+      left: -0.75em;
+      font-size: 1.1em;
+      margin-top: -0.1em;
+    }
+  }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer style="padding-top:20px;padding-bottom:30px;text-align: center;font-size:14px;color:#666;">
+    Copyright &copy; MF 2020
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if ($('#tag_cloud').length !== 0) {
+        async("https://capisy.github.io/js/jquery.tagcloud.js", function () {
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: { start: '#bbbbee', end: '#0085a1' },
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+    <a id="rocket" href="#top" class=""></a>
+    <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+    <!-- Image to hack wechat -->
+    <!-- <img src="https://capisy.github.io/img/icon_wechat.png" width="0" height="0" /> -->
+    <!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
