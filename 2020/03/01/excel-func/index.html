@@ -18,10 +18,10 @@
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <title>
-     拖拽(class版本) - 晓の博客-capisy.cn 
+     EXCEL常用函数汇总 - 晓の博客-capisy.cn 
   </title>
 
-  <link rel="canonical" href="https://capisy.github.io/2017/12/30/helper-drag-class/">
+  <link rel="canonical" href="https://capisy.github.io/2020/03/01/excel-func/">
 
   <!-- Bootstrap Core CSS -->
   <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -77,14 +77,14 @@
 					<div class="post-heading">
 						<div class="tags">
 							
-							<a class="tag" href="/tags/#JS_HELPER" title="JS_HELPER">JS_HELPER</a>
+							<a class="tag" href="/tags/#excel" title="excel">excel</a>
 							
 						</div>
-						<h1>拖拽(class版本)</h1>
+						<h1>EXCEL常用函数汇总</h1>
 						<h2 class="subheading"></h2>
 						<span class="meta">
 							Posted by MF on
-							2017-12-30
+							2020-03-01
 						</span>
 					</div>
 					
@@ -194,34 +194,26 @@
                 col-md-10 col-md-offset-1
                 post-container"
       >
-        <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Drag</span> </span>&#123;</span><br><span class="line">	<span class="keyword">constructor</span>(el) &#123;</span><br><span class="line">		<span class="keyword">this</span>.$el = el</span><br><span class="line">		<span class="keyword">this</span>.clientX = <span class="number">0</span></span><br><span class="line">		<span class="keyword">this</span>.clientY = <span class="number">0</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">init</span>() &#123;</span><br><span class="line">		<span class="keyword">this</span>.$el.onmousedown = <span class="keyword">this</span>.mouseDown.bind(<span class="keyword">this</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	mouseDown(ev) &#123;</span><br><span class="line">		<span class="keyword">const</span> left = <span class="keyword">this</span>.$el.offsetLeft</span><br><span class="line">		<span class="keyword">const</span> top = <span class="keyword">this</span>.$el.offsetTop</span><br><span class="line"></span><br><span class="line">		<span class="keyword">this</span>.$el.style.zIndex = <span class="number">999</span></span><br><span class="line">		<span class="keyword">this</span>.$el.style.cursor = <span class="string">'move'</span></span><br><span class="line"></span><br><span class="line">		<span class="keyword">this</span>.clientX = ev.clientX - left</span><br><span class="line">		<span class="keyword">this</span>.clientY = ev.clientY - top</span><br><span class="line"></span><br><span class="line">		document.onmousemove = <span class="keyword">this</span>.mouseMove.bind(<span class="keyword">this</span>)</span><br><span class="line">		document.onmouseup = <span class="keyword">this</span>.mouseUp.bind(<span class="keyword">this</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	mouseMove(ev) &#123;</span><br><span class="line">		<span class="keyword">const</span> x = ev.clientX - <span class="keyword">this</span>.clientX</span><br><span class="line">		<span class="keyword">const</span> y = ev.clientY - <span class="keyword">this</span>.clientY</span><br><span class="line"></span><br><span class="line">		<span class="keyword">this</span>.$el.style.left = x + <span class="string">'px'</span></span><br><span class="line">		<span class="keyword">this</span>.$el.style.top = y + <span class="string">'px'</span></span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	mouseUp() &#123;</span><br><span class="line">		<span class="keyword">this</span>.$el.style.zIndex = <span class="number">0</span></span><br><span class="line">		<span class="keyword">this</span>.$el.style.cursor = <span class="string">'default'</span></span><br><span class="line"></span><br><span class="line">		document.onmousemove = <span class="literal">null</span></span><br><span class="line">		document.onmouseup = <span class="literal">null</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h4 id="把首字母转换为大写-proper"><a href="#把首字母转换为大写-proper" class="headerlink" title="把首字母转换为大写 proper"></a>把首字母转换为大写 proper</h4><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=<span class="built_in">proper</span>(<span class="built_in">text</span>)</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LimitDrag</span> <span class="title">extends</span> <span class="title">Drag</span> </span>&#123;</span><br><span class="line">	<span class="keyword">constructor</span>(el, limit = &#123;&#125;) &#123;</span><br><span class="line">		<span class="keyword">super</span>(el)</span><br><span class="line">		<span class="keyword">this</span>.minX = limit.minX || <span class="number">0</span></span><br><span class="line">		<span class="keyword">this</span>.minY = limit.minY || <span class="number">0</span></span><br><span class="line">		<span class="keyword">this</span>.maxX = limit.maxX || document.documentElement.clientWidth - <span class="keyword">this</span>.$el.offsetWidth</span><br><span class="line">		<span class="keyword">this</span>.maxY = limit.maxY || document.documentElement.clientHeight - <span class="keyword">this</span>.$el.offsetHeight</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	mouseMove(ev) &#123;</span><br><span class="line">		let x = ev.clientX - <span class="keyword">this</span>.clientX</span><br><span class="line">		let y = ev.clientY - <span class="keyword">this</span>.clientY</span><br><span class="line"></span><br><span class="line">		x = Math.max(x, <span class="keyword">this</span>.minX)</span><br><span class="line">		x = Math.min(x, <span class="keyword">this</span>.maxX)</span><br><span class="line">		y = Math.max(y, <span class="keyword">this</span>.minY)</span><br><span class="line">		y = Math.min(y, <span class="keyword">this</span>.maxY)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">this</span>.$el.style.left = x + <span class="string">'px'</span></span><br><span class="line">		<span class="keyword">this</span>.$el.style.top = y + <span class="string">'px'</span></span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="快速生成26个英文字母-char"><a href="#快速生成26个英文字母-char" class="headerlink" title="快速生成26个英文字母 char"></a>快速生成26个英文字母 char</h4><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=<span class="built_in">char</span>(<span class="built_in">row</span>(<span class="symbol">a65</span>))  // A,然后ctrl下拉，同数字递增</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">export</span> &#123; Drag, LimitDrag &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=<span class="built_in">char</span>(<span class="built_in">row</span>(<span class="symbol">a97</span>)) // a</span><br></pre></td></tr></table></figure>
 
+<h4 id="字符串合并-phonetic"><a href="#字符串合并-phonetic" class="headerlink" title="字符串合并 phonetic"></a>字符串合并 phonetic</h4><p><img src="/images/blog/excel/phonetic.jpg" alt> </p>
+<p><img src="/images/blog/excel/phonetic2.jpg" alt></p>
 
 
         <hr />
         <!-- Pager -->
         <ul class="pager">
-          
-          <li class="previous">
-            <a
-              href="/2017/12/30/helper-drag-prototype/"
-              data-toggle="tooltip"
-              data-placement="top"
-              title="拖拽(原型版本)"
-              >&larr; Previous Post</a
-            >
-          </li>
            
           <li class="next">
             <a
-              href="/2013/05/10/memory-20130510/"
+              href="/2019/08/09/php-oop-6/"
               data-toggle="tooltip"
               data-placement="top"
-              title="漫过四月天"
+              title="面向对象-继承和多态"
               >Next Post &rarr;</a
             >
           </li>
@@ -259,6 +251,17 @@
 
       <!-- Tabe of Content -->
       <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#把首字母转换为大写-proper"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">把首字母转换为大写 proper</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#快速生成26个英文字母-char"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">快速生成26个英文字母 char</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#字符串合并-phonetic"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">字符串合并 phonetic</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
 
     </div>
   </div>
